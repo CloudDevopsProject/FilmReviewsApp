@@ -11,12 +11,8 @@ import com.filmreview.models.User;
 
 public class AppUserDetails implements UserDetails{
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	//Instantiate a User instance
-	User user;
+	private User user;
 	
 	public AppUserDetails(User user) {
 		this.user = user;
@@ -29,7 +25,7 @@ public class AppUserDetails implements UserDetails{
 
 	@Override
 	public String getPassword() {
-		return null;
+		return user.getPassword();
 	}
 	
 	//This method will allow users to log in using their email address instead of a username

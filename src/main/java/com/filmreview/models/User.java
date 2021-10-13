@@ -35,6 +35,17 @@ public class User {
 	@OneToMany(mappedBy = "userId")
 	private List<Comment> comments;
 	
+	//Constructors
+	public User() {}
+	
+	public User(String firstName, String lastName, String email, String password, UserRole userRole) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		this.roleId = userRole;
+	}
+	
 	//Getters and Setters
 	public Long getUserId() {
 		return userId;

@@ -34,30 +34,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		 http
+		 	.antMatcher("**")
 		 	.authorizeRequests()
-		 	.and()
-		 		.formLogin()
-			 		.loginPage("/login")
-		     		.loginProcessingUrl("/login")
-		     		.usernameParameter("email")
-		     		.defaultSuccessUrl("/", true)
-		     		.failureUrl("/loginFailure")
-		     		.permitAll()   
-	     	.and()
-		     	.logout()
-	     			.logoutUrl("/logout")
-	     			.logoutSuccessUrl("/")
-	     			.permitAll();   
+		.and()
+		 .formLogin()
+		 	.loginPage("/displayLogin")
+     		.loginProcessingUrl("/displayLogin")
+     		.usernameParameter("email")
+     		.defaultSuccessUrl("/", true)
+     		.failureUrl("/loginFailure")
+     	.permitAll()   
+		 .and()
+		 .logout()
+     		.logoutUrl("/logout")
+     		.logoutSuccessUrl("/")
+     		.permitAll();   
 	}
+
 	
 	 @Override
 	 public void configure(WebSecurity web) {
 		 web.ignoring()
-	     	.antMatchers("/resources/**", "/static/**", "/login");
+	     	.antMatchers("/resources/**", "/static/**", "/login**");
 	 }
-	
-	
-	
-	
-
 }

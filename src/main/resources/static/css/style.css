@@ -1,0 +1,39 @@
+/*GENERIC STYLING*/
+
+/*FORMS*/
+.formWrap {
+	position:relative;
+	top:7em;
+	background-color:black;
+	opacity:0.9;
+	color:white;
+	padding:0em 1em 2em 1em;
+	text-align:center;
+	border-radius:1em;
+	font-size:1.1em;
+}
+
+@media only screen and (min-width: 600px){
+	.formWrap {
+		width:50%;
+		margin:5em auto;
+		position:relative;
+		top:5em;
+	}
+}/*This class makes the form in the form wrapper smaller on screen sizes above 700*/
+
+/*Form Icons*/
+.formWrap i {
+	text-align:center;
+	font-size:6em;
+	color:red;
+	background-color:black;
+	border-radius:100%;
+	position:relative;
+	padding:.2em;
+	top:-.7em;	
+}/*This class is for the form icons*/
+
+.registrationForm {
+
+}
