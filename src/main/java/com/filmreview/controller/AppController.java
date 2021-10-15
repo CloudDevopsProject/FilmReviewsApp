@@ -55,8 +55,16 @@ public class AppController {
 	
 	// Method below will display the registration form
 	@GetMapping("/register")
-	public String displayRegistrationPage() {
-		return "registration.html";
+	public String displayRegistrationPage(RedirectAttributes attributes) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		//If the user is not logged in, display the registration form
+		if(auth instanceof AnonymousAuthenticationToken) {
+			return "registration.html";
+		} else {
+			//If user is already logged in display a message and redirect to the home page
+			attributes.addFlashAttribute("pageMessage", "Logged in users cannot register accounts");
+			return "redirect:/"; 
+		}
 	}
 
 	// Method below will try to create a new user based on the details provided in the registration form
