@@ -6,11 +6,6 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class FilmGenreKey implements Serializable{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	
 	//The two instance variables below will be used to create a primary key for the FilmGenre entity
 	private Short genreId;
@@ -28,8 +23,5 @@ public class FilmGenreKey implements Serializable{
 	}
 	public void setFilmId(Short filmId) {
 		this.filmId = filmId;
-	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 }

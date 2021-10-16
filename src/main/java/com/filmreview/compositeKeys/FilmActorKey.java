@@ -7,10 +7,6 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class FilmActorKey implements Serializable{
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	//The two instance variables below will be used to create a primary key for the FilmDirector entity
 	private Short actorId;
 	private Short filmId;

@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -94,6 +95,13 @@ public class AppController {
 		}
 		attributes.addFlashAttribute("pageMessage", postStatus);
 		return "redirect:/displayLogin";		
+	}
+	
+	//Method below will display page displaying all generic users if the user is an admin
+	@GetMapping("/displayUsers")
+	public String displayUsers(Model model, Authentication auth) {
+		System.out.println(auth.getAuthorities());
+		return null;
 	}
 
 }
