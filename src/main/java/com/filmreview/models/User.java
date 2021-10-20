@@ -110,4 +110,9 @@ public class User {
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
+	
+	//Method to retrieve users full name
+	public String getFullName() {
+		return this.getFirstName() + " " + this.getLastName();
+	}
 }

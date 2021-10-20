@@ -1,5 +1,7 @@
 package com.filmreview.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -8,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -25,6 +28,21 @@ public class AppController {
 
 	@Autowired
 	UserRepo userRepo;
+	
+	// Method below determines user type
+	public String getUserRole() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null) {
+			String role = authentication.getAuthorities().toString();
+			//Return the users role 
+			if(role.equals("[admin]")) {
+				return "admin";
+			} else if (role.equals("[genericUser]")) {
+				return "genericUser";
+			}
+		}
+		return "userNotLoggedIn";
+	}
 
 	// Method below will display the home page
 	@GetMapping("/")
@@ -99,9 +117,53 @@ public class AppController {
 	
 	//Method below will display page displaying all generic users if the user is an admin
 	@GetMapping("/displayUsers")
-	public String displayUsers(Model model, Authentication auth) {
-		System.out.println(auth.getAuthorities());
-		return null;
+	public String displayUsers(Model model) {
+		//Make sure the logged in user is an admin before accessing this page
+		if(getUserRole().equals("admin")) {
+			// Get all users from the database and add them to the page model
+			List<User> users = userRepo.findAll();
+			//Determine if there are users listed in the database
+			if(users.isEmpty()) {
+				model.addAttribute("users", "emptyRepo");
+			} else {
+				model.addAttribute("users", users);	
+			}
+			return "viewUsers.html";
+		} else {
+			return null;
+		}
+		
 	}
-
+	
+	//Method below will allow admins to adjust user roles
+	@GetMapping("/adjustRole/{userId}")
+	public String adjustRole(@PathVariable("userId") Long userId, RedirectAttributes attribute) {
+		//Make sure the user is a logged in user
+		if(getUserRole().equals("admin")) {
+			String adjustStatus;
+			//Retrieve the desired user from the repo using the userID argument. Try/Catch block due to possibility userId doesn't exist
+			try {
+				User user = userRepo.getById(userId);
+				//Change the user's role id to the opposite of what it currently is
+				if (user.getRoleId().getRoleID() == 1) {
+					user.setRoleId(userRoleRepo.getById((short) 2));
+					adjustStatus = "Admin rights revoked from " + user.getFullName();
+				} else {
+					user.setRoleId(userRoleRepo.getById((short) 1));
+					adjustStatus = "Admin rights granted to " + user.getFullName();
+				}
+				//Save the updated user information
+				userRepo.save(user);
+			} catch (Exception e) {
+				//If there is no user matchng id provided
+				e.printStackTrace();
+				adjustStatus = "Error: No user matches user id provided";
+			}
+			attribute.addFlashAttribute("pageMessage", adjustStatus);
+			return "redirect:/displayUsers";
+		} else {
+			return null;
+		}
+		
+	}
 }

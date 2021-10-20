@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:include = "htmlFragments :: headElement">
+	<title>View Users</title>
+</head>
+<body>
+	<!--Navigation Bar-->
+	<div th:insert = "htmlFragments :: navBar"></div>
+	<!--<p> element below will display a message after role adjustment is attempted -->
+	<p th:if = "${pageMessage}" th:text = "${pageMessage}">
+	<!--For each User display a row-->
+	<table class = "table table-sm">
+		<thead>
+			<tr>
+				<th scope = "col">ID</th>
+				<th scope = "col">Name</th>
+				<th scope = "col">Email</th>
+				<th scope = "col">Role</th>
+				<th scope = "col">Action</th>
+			</tr>
+		
+		</thead>
+		<!--If there are no users in the database, display that information-->
+		<tbody th:if = "${users == 'emptyRepo'}">
+			<tr>
+				<td width = "99%">No users in database</td>
+			</tr>
+		</tbody>
+		<!--Display a table row for each user if there are users-->
+		<tbody th:unless = "${users == 'emptyRepo'}">
+			<th:block th:each = "user: ${users}">
+				<tr>
+					<td th:text = "${user.userId}">
+					<td th:text = "${user.getFullName()}">
+					<td th:text = "${user.getEmail}">
+					<td th:text = "${user.roleId.role}">
+					<!--Buttons will vary depending on if listed user is admin or generic user-->
+					<td>
+						<!--Display function when button is clicked to allow the user to confirm they want to adjust the selected users role-->
+						<a th:onclick = "confirmUserRoleAdjustment([[${user.getFullName}]], [[${user.roleId.role}]] )" th:href = "@{'/adjustRole/'} + ${user.userId}" id = "adjustRoleButton">
+							<button th:if = "${user.roleId.roleID == 2}" class = "btn btn-success">Make Admin</button>
+							<button th:if = "${user.roleId.roleID == 1}" class = "btn btn-danger">Remove as Admin</button>
+						</a>
+					</td>
+				<tr>
+			</th:block>
+			
+			
+		</tbody>
+	</table>
+	
+	<!--JS Files-->
+	<div th:insert = "htmlFragments :: jsScripts"></div>
+</body>
+</html>
