@@ -78,3 +78,42 @@ function confirmUserRoleAdjustment(fullName, role) {
 		window.event.preventDefault();
 	} 
 }
+
+function filterUsers(value) {
+	//Convert the search value to lower case
+	value = value.toLowerCase();
+	let table = document.getElementById("usersTable");
+	let tableBody = table.getElementsByTagName("tbody")[0];
+	let tableRows = tableBody.getElementsByTagName("tr");
+	let resultFound = false;
+	//Loop all records in the table 
+	for(i=0;i<tableRows.length;i++) {
+		emailField = tableRows[i].getElementsByTagName("td")[2];
+		if(emailField){
+			//Convert all stored email addresses to lowercase
+			let address = emailField.innerHTML.toLowerCase();
+			if(address.indexOf(value) > -1) {
+				tableRows[i].style.display = "";
+				resultFound = true;
+			} else {
+				tableRows[i].style.display = "none";
+			}
+		}
+	}
+	//If there are no results matching the email address display that information
+	if (resultFound == false) {
+		let tableBodyNoResults = document.createElement("tbody");
+		tableBodyNoResults.setAttribute('id', 'noUserMatches');
+		let tableRow = document.createElement("tr");
+		let tableDataBlock = document.createElement("td");
+		tableDataBlock.innerHTML = "No Results found";
+		tableRow.append(tableDataBlock);
+		tableBodyNoResults.append(tableRow);
+		table.append(tableBodyNoResults);	
+	} else {
+		//Remove display of no results if results have been found or if no search value is provided
+		if(document.getElementById("noUserMatches")) {
+			document.getElementById("noUserMatches").remove();
+		}
+	}
+}
