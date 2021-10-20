@@ -8,8 +8,11 @@
 	<div th:insert = "htmlFragments :: navBar"></div>
 	<!--<p> element below will display a message after role adjustment is attempted -->
 	<p th:if = "${pageMessage}" th:text = "${pageMessage}">
+	<form>
+	<input type="text" onkeyup="filterUsers(this.value)" placeholder="Search by email">
+	</form>
 	<!--For each User display a row-->
-	<table class = "table table-sm">
+	<table class = "table table-sm" id = "usersTable">
 		<thead>
 			<tr>
 				<th scope = "col">ID</th>
@@ -17,8 +20,7 @@
 				<th scope = "col">Email</th>
 				<th scope = "col">Role</th>
 				<th scope = "col">Action</th>
-			</tr>
-		
+			</tr>	
 		</thead>
 		<!--If there are no users in the database, display that information-->
 		<tbody th:if = "${users == 'emptyRepo'}">
