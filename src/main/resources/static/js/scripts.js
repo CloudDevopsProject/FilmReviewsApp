@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	
+		
 	//Regular Expressions that will be used to validate forms
 	const lettersOnlyRegex = new RegExp("^.[A-z]*$");	//Check for only lower o upper case letters
 	
@@ -63,5 +63,18 @@ $(document).ready(function() {
 				}
 			}
 		}
-	})
+	});
 })
+
+//Function below will display an alert to the user before adjusting another users role
+function confirmUserRoleAdjustment(fullName, role) {
+	//The adjustedTo value will be set as the opposite of whatever is passed as an argument
+	if(role == "admin") {
+		adjustedTo = "generic";
+	} else {
+		adjustedTo = "admin";
+	}
+	if(!confirm("Are you sure you want to change " + fullName + "'s role from " + role + " user to " + adjustedTo + " user")) {
+		window.event.preventDefault();
+	} 
+}

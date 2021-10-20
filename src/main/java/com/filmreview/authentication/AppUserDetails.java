@@ -2,9 +2,12 @@
 
 package com.filmreview.authentication;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.filmreview.models.User;
@@ -20,7 +23,14 @@ public class AppUserDetails implements UserDetails{
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+		List<SimpleGrantedAuthority> authority = new ArrayList<>();
+		//Add user role using their roleId
+		if(this.getRoleId() == 1) {
+			authority.add(new SimpleGrantedAuthority("admin"));
+		} else if (this.getRoleId() == 2) {
+			authority.add(new SimpleGrantedAuthority("genericUser"));
+		}
+		return authority;
 	}
 
 	@Override
