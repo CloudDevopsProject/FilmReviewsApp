@@ -2,7 +2,7 @@ name: Build
 on:
   push:
     branches:
-      - main
+      - SonarQubeIntegration
 
 jobs:
   build:
