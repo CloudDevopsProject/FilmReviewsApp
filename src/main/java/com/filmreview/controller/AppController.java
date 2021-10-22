@@ -43,6 +43,12 @@ public class AppController {
 		}
 		return "userNotLoggedIn";
 	}
+	
+	// Method below will display the test page
+	@GetMapping("/test")
+	public String test() {
+		return "test.html";
+	}
 
 	// Method below will display the home page
 	@GetMapping("/")
