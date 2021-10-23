@@ -13,12 +13,13 @@ class AppControllerTest {
 		fail("Not yet implemented");
 	}
 	
-	@Test
-	void testUserRegistration() {
-		//Instantiate the Controller
-		AppController controller = new AppController();
-		controller.registerUser("First", "Last", "testEmail@email.ie", "testingPassword", null);
-		
-	}
+	/*
+	 * @Test void testUserRegistration() { //Instantiate the Controller
+	 * AppController controller = new AppController();
+	 * controller.registerUser("First", "Last", "testEmail@email.ie",
+	 * "testingPassword", null);
+	 * 
+	 * }
+	 */
 
 }
