@@ -29,7 +29,7 @@
 			</tr>
 		</tbody>
 		<!--Display a table row for each user if there are users-->
-		<tbody th:unless = "${users == 'emptyRepo'}">
+		<tbody th:unless = "${users == 'emptyRepo'}" id = "userResultsBody">
 			<th:block th:each = "user: ${users}">
 				<tr>
 					<td th:text = "${user.userId}">

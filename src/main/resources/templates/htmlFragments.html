@@ -40,6 +40,10 @@
  					<li class="nav-item" sec:authorize="isAnonymous()"><a class="nav-link" th:href="@{/register}">Register</a></li>
 					<!--Login Button if user is not logged in-->
 					<li class="nav-item" sec:authorize="isAnonymous()"><a class="nav-link" th:href = "@{/displayLogin}">Login</a></li>
+					<!-- Only display the option to Add review if the user is logged in-->
+					<li sec:authorize="isAuthenticated()" th:if = "${#authentication.getPrincipal()!=null}" class="nav-item">
+						<a class="nav-link" th:href = "@{/addReview}">Add Review</a>
+					</li>
 				</ul>
 				<!--Logout Button if user is logged in-->
 				<form class="form-inline" action="/logout" method="post" sec:authorize="isAuthenticated()">
