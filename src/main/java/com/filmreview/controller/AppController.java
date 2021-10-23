@@ -230,7 +230,6 @@ public class AppController {
 			}
 			//Get the current year and add to the model to provide a threshold on films release year
 			LocalDate date = LocalDate.now();
-			System.out.println("YEAR::" + date.getYear());
 			model.addAttribute("yearThreshold", date.getYear());
 			return "reviewForm.html";
 		} else {
