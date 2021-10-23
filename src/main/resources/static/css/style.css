@@ -34,6 +34,7 @@
 	top:-.7em;	
 }/*This class is for the form icons*/
 
-.registrationForm {
-
+.formWrap textarea {
+	width:95%;
+	height:5em;
 }
