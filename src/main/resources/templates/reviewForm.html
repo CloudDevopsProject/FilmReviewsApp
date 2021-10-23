@@ -37,20 +37,30 @@
 			</div>
 			<!--Director-->
 			<div class="form-group">
-				<label for="director">Director</label> 
-				<input type="text" class="form-control" name="director" placeholder="Director(s)"required>
+				<label for="director">Director(s)</label> 
+				<input type="text" class="form-control" name="director" list = "filmDirector" placeholder="Film Director(s)" required>
+				<datalist id="filmDirector">
+    				<th:block th:each = "director: ${directors}">
+    					<option th:value = "${director}" th:text = "${director.name}"></option>
+    				</th:block>
+   				 </datalist>
 			</div>
 			<!--Actors-->
 			<div class="form-group">
-				<label for="actors">Actors</label> 
-				<input type="text" class="form-control" name="actors"
-					placeholder="Choose a password" required>
+				<label for="actor">Actor(s)</label> 
+				<input type="text" class="form-control" name="actor" list = "filmActor" placeholder="Film Actor(s)" required>
+				<datalist id="filmActor">
+    				<th:block th:each = "actor: ${actors}">
+    					<option th:value = "${actor}" th:text = "${actor.name}"></option>
+    				</th:block>
+   				 </datalist>
 			</div>
-			<!--Film Rating-->
 			<div class="form-group">
+				<!--Relase Year-->
 				<label for="releaseYear">Release Year</label> 
 				<select>
-					 <option th:each="i : ${#numbers.sequence(1900, 2021)}" th:value="${i}" th:text="${i}">
+					<!--Threshold is set in controller class so the highest year possible to be selected is current year-->
+					 <option th:each="i : ${#numbers.sequence(1900, {yearThreshold})}" th:value="${i}" th:text="${i}">
 				</select>
 				<label for="rating">Rating</label> 
 				<select>

@@ -1,5 +1,6 @@
 package com.filmreview.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.filmreview.models.Actor;
+import com.filmreview.models.Director;
 import com.filmreview.models.Film;
 import com.filmreview.models.Genre;
 import com.filmreview.models.User;
+import com.filmreview.repositories.ActorRepo;
 import com.filmreview.repositories.DirectorRepo;
 import com.filmreview.repositories.FilmRepo;
 import com.filmreview.repositories.GenreRepo;
@@ -42,6 +46,9 @@ public class AppController {
 	
 	@Autowired
 	DirectorRepo directorRepo;
+	
+	@Autowired
+	ActorRepo actorRepo;
 	
 	// Method below determines user type
 	public String getUserRole() {
@@ -203,6 +210,28 @@ public class AppController {
 				//Add genres from the genre repo to the model if they exist
 				model.addAttribute("genres", genres);
 			}
+			//Get all directors already in the database and add to the model
+			List<Director> directors = directorRepo.findAll();
+			//Identify if the director repo is empty
+			if(directors.isEmpty()) {
+				model.addAttribute("directors", "emptyRepo");
+			} else {
+				//Add directors from the director repo to the model if they exist
+				model.addAttribute("directors", directors);
+			}
+			//Get all actors already in the database and add to the model
+			List<Actor> actors = actorRepo.findAll();
+			//Identify if the actor repo is empty
+			if(actors.isEmpty()) {
+				model.addAttribute("actors", "emptyRepo");
+			} else {
+				//Add actors from the actor repo to the model if they exist
+				model.addAttribute("actors", actors);
+			}
+			//Get the current year and add to the model to provide a threshold on films release year
+			LocalDate date = LocalDate.now();
+			System.out.println("YEAR::" + date.getYear());
+			model.addAttribute("yearThreshold", date.getYear());
 			return "reviewForm.html";
 		} else {
 			return "redirect:/";
