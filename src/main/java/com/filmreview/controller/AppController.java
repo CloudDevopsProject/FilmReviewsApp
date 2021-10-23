@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.filmreview.models.Film;
 import com.filmreview.models.Genre;
 import com.filmreview.models.User;
+import com.filmreview.repositories.DirectorRepo;
 import com.filmreview.repositories.FilmRepo;
 import com.filmreview.repositories.GenreRepo;
 import com.filmreview.repositories.UserRepo;
@@ -38,6 +39,9 @@ public class AppController {
 	
 	@Autowired
 	GenreRepo genreRepo;
+	
+	@Autowired
+	DirectorRepo directorRepo;
 	
 	// Method below determines user type
 	public String getUserRole() {
