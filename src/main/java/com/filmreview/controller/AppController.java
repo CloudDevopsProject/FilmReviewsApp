@@ -70,6 +70,10 @@ public class AppController {
 	public String test() {
 		return "test.html";
 	}
+	@GetMapping("/contact")
+	public String contact() {
+		return "contact.html";
+	}
 
 	// Method below will display the home page
 	@GetMapping("/")
