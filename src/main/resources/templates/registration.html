@@ -1,59 +1,135 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:include = "htmlFragments :: headElement">
-	<title>Registration</title>
-</head>
+
+<head>
+
+	<title>Sign up</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
 <style>
-body {font-family: "Times New Roman", Georgia, Serif;}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: "Playfair Display";
   letter-spacing: 5px;
 }
+
+/* Full-width input fields */
+input[type=text], input[type=password], input[type=email]{
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  background: #f1f1f1;
+}
+
+
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+
+/* Set a style for all buttons */
+button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  
+}
+
+button:hover {
+  opacity:1;
+}
+
+
+
+
+/* Add padding to container elements */
+.container {
+  padding: 16px;
+}
+
+/* Clear floats */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Change styles for cancel button and signup button on extra small screens */
+
+
 </style>
+</head>
 <body>
+
 	<!--Navigation Bar-->
-	<div th:insert = "htmlFragments :: navBar"></div>
-	<p th:if = "${pageMessage}" th:text = "${pageMessage}">
-	<!--Container for the form-->
-	<div class="formWrap">
-		<i class="fas fa-user-plus"></i>
-		<h1>Registration Form</h1>
-		<form action="" method="post" id = "registrationForm">
-			<!--CSRF Token-->
-			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-			<!--First Name-->
-			<div class="form-group">
-				<label for="firstName">First Name</label> 
-				<input type="text"class="form-control" name="firstName" placeholder="Your first name" required>
-			</div>
-			<!--Last Name-->
-			<div class="form-group">
-				<label for="lastName">Last Name</label> 
-				<input type="text" class="form-control" name = "lastName" placeholder="Your last name" required>
-			</div>
-			<!--Email-->
-			<div class="form-group">
-				<label for="email">Email Address</label> 
-				<input type="email" class="form-control" name="email" placeholder="Your email address" required>
-			</div>
-			<!--Password-->
-			<div class="form-group">
-				<label for="password">Password</label> 
-				<input type="password" class="form-control" id="password" name = "password" placeholder="Choose a password" required>
-			</div>
-			<!--Password Confirm-->
-			<div class="form-group">
-				<label for="passwordConfirm">Confirm Password</label> 
-				<input type="password" class="form-control" id="passwordConfirm" placeholder="Confirm your password" required>
-			</div>
-			<div class = "text-center">
-				<button type="submit" class = "btn btn-primary">Register</button>
-			</div>
-		</form>
-	</div>
+	<div th:insert = "htmlFragments :: navBar" style="font-family: Times New Roman, Georgia, Serif; "></div>
+	
+	<h1></h1>
+	
+			<br>
+		<br>
+		
+		<p th:if = "${pageMessage}" th:text = "${pageMessage}">
+		
+		<div class="imgcontainer">
+  			<img th:src="@{images/login.png}" alt="signup"  style="width:200px;height:200px;" >
+  			<h1>Sign Up</h1>
+    <p>Please fill in this form to create an account.</p>
+  		</div>
+		
+		 
+
+	<form action="" method="post" id = "registrationForm">
+  	<div class="container">
+   
+    <!--CSRF Token-->
+	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+	<!-- First name -->
+	<label for="firstName"><b>First Name</b></label> 
+	<input type="text"class="form-control" name="firstName" placeholder="Your first name" required>
+		
+	<!-- Last name -->	
+	<label for="lastName"><b> Last Name </b></label>
+	<input type="text" class="form-control" name="lastName" placeholder="Your last name" required>
 	
 	
-	<!--JS Files-->
+	<!--Email-->
+    <label for="email"><b>Email</b></label>
+    <input type="email" class="form-control" name="email" placeholder="Your email address" required>
+
+	<!--Password-->
+    <label for="password"><b>Password</b></label>
+    <input type="password" class="form-control" id="password" name = "password" placeholder="Choose a password" required>
+
+	<!--Password Confirm-->
+    <label for="passwordConfirm"><b>Confirm Password</b></label> 
+	<input type="password" class="form-control" id="passwordConfirm" placeholder="Confirm your password" required>
+    
+    
+    <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
+
+    <div class="clearfix">
+     
+      <button type="submit"  >Sign Up</button>
+    </div>
+  </div>
+</form>
+
+<!--JS Files-->
 	<div th:insert = "htmlFragments :: jsScripts"></div>
+
 </body>
 </html>

@@ -8,7 +8,6 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Playfair Display";
   letter-spacing: 5px;
 }
-form {border: 3px solid #f1f1f1;}
 
 input[type=email], input[type=password] {
   width: 100%;
@@ -17,6 +16,7 @@ input[type=email], input[type=password] {
   display: inline-block;
   border: 1px solid #ccc;
   box-sizing: border-box;
+  background: #f1f1f1;
 }
 
 button {
@@ -112,8 +112,9 @@ span.psw {
 
     <label for="passwordLogin"><b>Password</b></label>
     <input type="password" class="form-control" placeholder="Enter Password" id="passwordLogin" name="password" required>
-        
      <div class="invalid-feedback form-group"></div>
+     
+     
     <button type="submit" class="validButton" style="color:white">Login</button>
     <label>
       <input type="checkbox" checked="checked" name="remember"> Remember me
