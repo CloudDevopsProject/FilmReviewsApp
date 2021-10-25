@@ -18,6 +18,14 @@ public class Film {
 	private String name;
 	private String releaseYear;
 	
+	//Constructors
+	public Film() {}
+	
+	public Film(String name, String releaseYear) {
+		this.name = name;
+		this.releaseYear = releaseYear;
+	}
+	
 	//Relation with FilmReview entity
 	@OneToMany(mappedBy = "filmId")
 	private List<FilmReview> reviews;

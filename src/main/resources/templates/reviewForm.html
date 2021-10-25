@@ -12,7 +12,7 @@
 	<div class="formWrap">
 		<i class="fas fa-user-plus"></i>
 		<h1>Add Review</h1>
-		<form action="" method="" id="reviewForm">
+		<form action="/addReview" method="post" id="reviewForm">
 			<!--CSRF Token-->
 			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 			<!--Film Name-->
@@ -58,17 +58,17 @@
 			<div class="form-group">
 				<!--Relase Year-->
 				<label for="releaseYear">Release Year</label> 
-				<select>
+				<select name = "releaseYear">
 					<!--Threshold is set in controller class so the highest year possible to be selected is current year-->
 					 <option th:each="i : ${#numbers.sequence(1900, {yearThreshold})}" th:value="${i}" th:text="${i}">
 				</select>
 				<label for="rating">Rating</label> 
-				<select>
+				<select name = "rating">
 					 <option th:each="i : ${#numbers.sequence(0, 5)}" th:value="${i}" th:text="${i}">
 				</select>
 			</div>
 			<div class="form-group">
-				<textarea placeholder = "Leave your review"></textarea>
+				<textarea placeholder = "Leave your review" name = "textArea"></textarea>
 			</div>
 			<div class="text-center">
 				<button type="submit" class="btn btn-primary">Submit</button>

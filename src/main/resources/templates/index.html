@@ -9,5 +9,8 @@
 	<p th:if = "${pageMessage}" th:text = "${pageMessage}">
 	<h1>This is the home page</h1>
 	<h2>Home Page</h2>
+	
+	<!--JS Files-->
+	<div th:insert = "htmlFragments :: jsScripts"></div>
 </body>
 </html>

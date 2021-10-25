@@ -68,5 +68,9 @@ public class AppUserDetails implements UserDetails{
 	public short getRoleId() {
 		return user.getRoleId().getRoleID();
 	}
-
+	
+	//This method will return the user id 
+	public Long getUserId() {
+		return user.getUserId();
+	}
 }

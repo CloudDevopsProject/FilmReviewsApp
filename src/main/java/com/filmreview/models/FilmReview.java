@@ -18,7 +18,7 @@ public class FilmReview {
 	private Long reviewId;
 	
 	private String review;
-	private short rating;
+	private Short rating;
 	
 	//Relation with User entity
 	@ManyToOne
@@ -33,6 +33,14 @@ public class FilmReview {
 	//Relation with Comment entity
 	@OneToMany(mappedBy = "reviewId")
 	private List<Comment> comments;
+	
+	//Constructors
+	public FilmReview() {}
+	
+	public FilmReview(String review, short rating) {
+		this.review = review;
+		this.rating = rating;
+	}
 
 	//Getters and Setters
 	public Long getReviewId() {
@@ -55,7 +63,7 @@ public class FilmReview {
 		return rating;
 	}
 
-	public void setRating(short rating) {
+	public void setRating(Short rating) {
 		this.rating = rating;
 	}
 
