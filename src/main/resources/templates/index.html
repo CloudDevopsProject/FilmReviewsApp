@@ -8,12 +8,6 @@
 	<!--Navigation Bar-->
 	<div th:insert = "htmlFragments :: navBar"></div>
 	<p th:if = "${pageMessage}" th:text = "${pageMessage}">
-	<h1>This is the home page</h1>
-	<h2>Home Page</h2>
-	
-	<!--JS Files-->
-	<div th:insert = "htmlFragments :: jsScripts"></div>
-	<div th:insert="htmlFragments :: navBar"></div>
 	<p th:if="${pageMessage}" th:text="${pageMessage}">
 	<div class="container">
 		<h2>Top 3 Movies</h2>
