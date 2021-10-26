@@ -1,36 +1,133 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:include = "htmlFragments :: headElement">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {font-family: "Times New Roman", Georgia, Serif;}
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Playfair Display";
+  letter-spacing: 5px;
+}
+
+input[type=email], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  background: #f1f1f1;
+}
+
+button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.cancelbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+  color:white
+}
+
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+
+.container {
+  padding: 16px;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+     display: block;
+     float: none;
+  }
+  .cancelbtn {
+     width: 100%;
+  }
+}
+</style>
+
+<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	
 	<title>Login</title>
+
+
 </head>
 <body>
+
+	
 	<!--Navigation Bar-->
-	<div th:insert = "htmlFragments :: navBar"></div>
+	<div th:insert = "htmlFragments :: navBar" style="font-family: Times New Roman, Georgia, Serif; "></div>
+	
+	<h1></h1>
+	
+			<br>
+		<br>		
+		
+	
 	<!--<p> element below will display a message after incorrect login -->
 	<p th:if = "${pageMessage}" th:text = "${pageMessage}">
-	<!--Container for the form-->
-	<div class="formWrap">
-		<i class="fas fa-user-circle"></i>
-		<h1>Login</h1>
-		<form action = "/displayLogin" method = "post">
-			<!--CSRF Token-->
-			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-			<!--Email address Input-->
-			<div class="form-group">
-				<label for="emailogin">Email</label> 
-				<input type="email" id="emailLogin" name="email" placeholder="Your email address" class="form-control" required/> 
-			</div>
-			<div class="form-group">
-				<label for="passwordLogin">Password</label> 
-		 		<input type="password" id="passwordLogin" name="password" placeholder="Your Password" class="form-control" required/>
-		 	</div>
-		 	<div class="invalid-feedback form-group"></div>
-		 	<button type="submit" class="validButton">Login</button>
-		</form>
-	</div>
 	
-	
-	<!--JS Files-->
-	<div th:insert = "htmlFragments :: jsScripts"></div>
+
+
+
+  <div class="imgcontainer">
+  <img th:src="@{images/login.png}" alt="login"  style="width:200px;height:200px;" >
+   
+   <h2>Login Form</h2>
+   
+  </div>
+
+  <div class="container">
+  
+  	<form action = "/displayLogin" method = "post">
+  
+  	<!--CSRF Token-->
+	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+  
+    <label for="emailogin"><b>Email</b></label>
+    <input type="email" id="emailLogin" class="form-control" placeholder="Enter Email Address" name="email" required>
+
+    <label for="passwordLogin"><b>Password</b></label>
+    <input type="password" class="form-control" placeholder="Enter Password" id="passwordLogin" name="password" required>
+     <div class="invalid-feedback form-group"></div>
+     
+     
+    <button type="submit" class="validButton" style="color:white">Login</button>
+    <label>
+      <input type="checkbox" checked="checked" name="remember"> Remember me
+    </label>
+    
+    </form>
+  </div>
+
+  <div class="container" style="background-color:#f1f1f1">
+    <button type="button" class="cancelbtn" >Cancel</button>
+    <span class="psw">Forgot <a href="#">password?</a></span>
+  </div>
+
+
 </body>
 </html>
