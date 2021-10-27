@@ -26,6 +26,13 @@ nav {
 	margin: 0 1em;
 }
 
+.pageMessage {
+	color: red;
+	text-align:center;
+	padding:1em;
+	margin:1em;
+}
+
 footer {
 	height: 3em;
 	background-color: #D3D3D3;
@@ -132,9 +139,14 @@ Form Icons
   	margin: 0.5em 0;
   	display: inline-block;
   	border: 0.06em solid #ccc;
-  	box-sizing: border-box;
   	background: #f1f1f1;
 }/* Full-width input fields */
+
+.authForm input[type = "checkbox"] {
+	width:auto;
+	margin: 0 1em 0 0;
+}
+
 
 .authForm button {
   	background-color: #04AA6D;
@@ -164,6 +176,25 @@ Form Icons
 	width:12.5em;
 	height:12.5em;
 }
+
+.loginAltActionWrap {
+	padding: 1em;
+	background-color:#f1f1f1;
+}
+
+.loginAltActionWrap button {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+  color:white
+}
+
+.loginAltActionWrap span {
+  float: right;
+  padding-top: 1em;
+}
+
+
 
 
 
