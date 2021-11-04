@@ -40,7 +40,6 @@ nav form {
 
 .logoutBtn {
 	background:none;
-	width:100%;
 	border:none;
 	font-family:"Playfair Display";
 	letter-spacing:0.4em;
@@ -231,6 +230,8 @@ Form Icons
 	font-weight:900;
 	font-size:1.4em;
 }
+
+
 
 
 
