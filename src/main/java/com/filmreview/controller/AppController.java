@@ -297,4 +297,33 @@ public class AppController {
 		}
 		return "index.html";
 	}
+	
+	//Method to add a genre to the database
+	@PostMapping("/addGenre")
+	public String addGenre(@RequestParam("valueToBeAdded") String newGenre, RedirectAttributes attributes) {
+		String pageMessage;
+		//Make sure the user is logged in
+		if (!getUserRole().equals("userNotLoggedIn")) {
+			try {
+				//If the genre is not already in the database, add it
+				if(!genreRepo.findByNameIgnoreCase(newGenre).isPresent()) {
+					Genre genre = new Genre(newGenre);
+					genreRepo.save(genre);
+					pageMessage = newGenre + " has been added to our database for selection";
+				} else {
+					//If film is already in the database, display that information to the user
+					pageMessage = "This genre is already in our database";
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				pageMessage = "An error has occurred with this request";
+			}
+			attributes.addFlashAttribute("pageMessage", pageMessage);
+			return "redirect:/addReview";
+		} else {
+			pageMessage = "An error has occurred";
+			attributes.addFlashAttribute("pageMessage", pageMessage);
+			return "index";
+		}
+	}
 }
