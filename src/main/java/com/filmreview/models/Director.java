@@ -21,6 +21,15 @@ public class Director {
 	@OneToMany(mappedBy = "director")
 	private List<FilmDirector> films;
 
+	
+	//Constructors
+	public Director() {}
+	
+	public Director(String name) {
+		this.name = name;
+	}
+	
+	//Getters and Setters
 	public Short getDirectorId() {
 		return directorId;
 	}

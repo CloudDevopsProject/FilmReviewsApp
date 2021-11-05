@@ -21,6 +21,13 @@ public class Actor {
 	@OneToMany(mappedBy = "actor")
 	private List<FilmActor> films;
 	
+	//Constructors
+	public Actor() {}
+	
+	public Actor(String name) {
+		this.name = name;
+	}
+	
 	//Getters and Setters
 	public Short getActorId() {
 		return actorId;

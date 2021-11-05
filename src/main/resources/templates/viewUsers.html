@@ -7,7 +7,7 @@
 	<!--Navigation Bar-->
 	<div th:insert = "htmlFragments :: navBar"></div>
 	<!--<p> element below will display a message after role adjustment is attempted -->
-	<p th:if = "${pageMessage}" th:text = "${pageMessage}">
+	<p th:if = "${pageMessage}" th:text = "${pageMessage}" class = "pageMessage">
 	<form>
 	<input type="text" onkeyup="filterUsers(this.value)" placeholder="Search by email">
 	</form>
