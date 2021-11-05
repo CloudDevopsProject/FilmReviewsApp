@@ -254,8 +254,7 @@ public class AppController {
 		}
 	}
 
-	// Method below will try to create a new review based on the details provided in
-	// the review form
+	// Method below will try to create a new review based on the details provided in the review form
 	@PostMapping("/addReview")
 	public String addReview(@RequestParam("film") String filmName, @RequestParam("genre") String genre,
 			@RequestParam("director") String director, @RequestParam("actor") String actor, @RequestParam("releaseYear") String releaseYear, 
@@ -311,8 +310,66 @@ public class AppController {
 					genreRepo.save(genre);
 					pageMessage = newGenre + " has been added to our database for selection";
 				} else {
-					//If film is already in the database, display that information to the user
+					//If genre is already in the database, display that information to the user
 					pageMessage = "This genre is already in our database";
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				pageMessage = "An error has occurred with this request";
+			}
+			attributes.addFlashAttribute("pageMessage", pageMessage);
+			return "redirect:/addReview";
+		} else {
+			pageMessage = "An error has occurred";
+			attributes.addFlashAttribute("pageMessage", pageMessage);
+			return "index";
+		}
+	}
+	
+	//Method to add a director to the database
+	@PostMapping("/addDirector")
+	public String addDirector(@RequestParam("valueToBeAdded") String newDirector, RedirectAttributes attributes) {
+		String pageMessage;
+		//Make sure the user is logged in
+		if (!getUserRole().equals("userNotLoggedIn")) {
+			try {
+				//If the director is not already in the database, add it
+				if(!directorRepo.findByNameIgnoreCase(newDirector).isPresent()) {
+					Director director = new Director(newDirector);
+					directorRepo.save(director);
+					pageMessage = newDirector + " has been added to our database for selection";
+				} else {
+					//If director is already in the database, display that information to the user
+					pageMessage = "This director is already in our database";
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				pageMessage = "An error has occurred with this request";
+			}
+			attributes.addFlashAttribute("pageMessage", pageMessage);
+			return "redirect:/addReview";
+		} else {
+			pageMessage = "An error has occurred";
+			attributes.addFlashAttribute("pageMessage", pageMessage);
+			return "index";
+		}
+	}
+	
+	//Method to add a director to the database
+	@PostMapping("/addActor")
+	public String addActor(@RequestParam("valueToBeAdded") String newActor, RedirectAttributes attributes) {
+		String pageMessage;
+		//Make sure the user is logged in
+		if (!getUserRole().equals("userNotLoggedIn")) {
+			try {
+				//If the actor is not already in the database, add it
+				if(!actorRepo.findByNameIgnoreCase(newActor).isPresent()) {
+					Actor actor = new Actor(newActor);
+					actorRepo.save(actor);
+					pageMessage = newActor + " has been added to our database for selection";
+				} else {
+					//If actor is already in the database, display that information to the user
+					pageMessage = "This actor is already in our database";
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -236,11 +236,3 @@ function addNewOption(modelType, enteredVal){
 		form.submit();
 	}
 }
-	
-
-
-
-/*function autoFillReviewFormDetails(objectIdentifier){
-	let form = document.getElementById("reviewForm");
-	let genreField = document.getElementById("movieGenre");
-}*/

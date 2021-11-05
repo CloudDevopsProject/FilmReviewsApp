@@ -53,7 +53,7 @@
 			</div>
 		</nav>
 		<!--<p> element below will display messages sent from controller-->
-		<p th:if = "${pageMessage}" th:text = "${pageMessage}">
+		<p th:if = "${pageMessage}" th:text = "${pageMessage}" class = "pageMessage">
 	<h1>Add a movie review</h1>
 	<!--Container for the form-->
 	<div class="formWrap">
@@ -81,25 +81,25 @@
 					</th:block>
 				</select>
 			</div>
-			<!--Director-->
-			<div class="form-group">
+			<!--Director(Can Select Multiple)-->
+			<div class="form-group" onkeyup = "checkOptionExists(this, 'Director')">
 				<label for="director">Director(s)</label> 
-				<input type="text" class="form-control" name="director" list = "filmDirector" placeholder="Film Director(s)" required>
-				<datalist id="filmDirector">
-    				<th:block th:each = "director: ${directors}">
-    					<option th:value = "${director}" th:text = "${director.name}"></option>
-    				</th:block>
-   				 </datalist>
+				<select class="selectpicker" data-live-search="true" name="director" required multiple>
+					<!--Directors will display in the select dropdown if there are any-->
+					<th:block  th:unless = "${directors =='emptyRepo'}" th:each = "director: ${directors}">
+						<option th:value = "${director}" th:text = "${director.name}"></option>
+					</th:block>
+				</select>
 			</div>
-			<!--Actors-->
-			<div class="form-group">
+			<!--Actor(Can Select Multiple)-->
+			<div class="form-group" onkeyup = "checkOptionExists(this, 'Actor')">
 				<label for="actor">Actor(s)</label> 
-				<input type="text" class="form-control" name="actor" list = "filmActor" placeholder="Film Actor(s)" required>
-				<datalist id="filmActor">
-    				<th:block th:each = "actor: ${actors}">
-    					<option th:value = "${actor}" th:text = "${actor.name}"></option>
-    				</th:block>
-   				 </datalist>
+				<select class="selectpicker" data-live-search="true" name="actor" required multiple>
+					<!--Actors will display in the select dropdown if there are any-->
+					<th:block  th:unless = "${actors =='emptyRepo'}" th:each = "actor: ${actors}">
+						<option th:value = "${actor}" th:text = "${actor.name}"></option>
+					</th:block>
+				</select>
 			</div>
 			<div class="form-group">
 				<!--Relase Year-->
