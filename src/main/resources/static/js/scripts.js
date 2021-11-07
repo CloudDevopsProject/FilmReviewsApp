@@ -1,6 +1,7 @@
 //Regular Expressions that will be used to validate forms
 const lettersOnlyRegex = new RegExp("^.[A-z]*$");	//Check for only lower o upper case letters
 const lettersNumbersAndSpacesOnlyRegex = new RegExp("^.[A-z0-9 ]*$")
+const lettersNumbersParenthesesAndSpacesOnlyRegex = new RegExp("^.[A-z0-9() ]*$")
 
 $(document).ready(function() {		
 	
@@ -46,51 +47,24 @@ $(document).ready(function() {
 	
 	//Prevent the review form from being submitted if it hasn't been validated
 	$("#reviewForm").on("submit", function(event) {
-		//Get all form elements
+		//Only the Film name and description area of the form need to be validated as they are the only inputs allowing free form text input
 		let movie = $("input[name = 'film']");
-		let genre =  $("input[name = 'genre']");
-		let director = $("input[name = 'director']");
-		let actor = $("input[name = 'actor']");
 		let textArea = $("textArea");
-		
-		//Submit form if all input element values match custom regex check to only allow letters, spaces and numbers
-		if(lettersNumbersAndSpacesOnlyRegex.test(movie.val()) && lettersNumbersAndSpacesOnlyRegex.test(genre.val()) && lettersNumbersAndSpacesOnlyRegex.test(director.val())
-				&& lettersNumbersAndSpacesOnlyRegex.test(actor.val()) && lettersNumbersAndSpacesOnlyRegex.test(textArea.val())) {
+		//Submit form if text input values match custom regex check to only allow letters, parentheses, spaces and numbers
+		if(lettersNumbersParenthesesAndSpacesOnlyRegex.test(movie.val()) && lettersNumbersParenthesesAndSpacesOnlyRegex.test(textArea.val())) {
 			return true;
 		} else {
 			event.preventDefault();
-			errorMessage = "Only letters, numbers and spaces can be accepted as inputs";
+			errorMessage = "Only letters, numbers, parentheses and spaces can be accepted as inputs";
 			//If there is an error for movie name
-			if(!lettersNumbersAndSpacesOnlyRegex.test(movie.val())) {
+			if(!lettersNumbersParenthesesAndSpacesOnlyRegex.test(movie.val())) {
 				displayFormError(movie, errorMessage);	
 			} else {
 				//Remove the error message if movie name is valid 
 				removeFormError(movie);
 			}	
-			//If there is an error for genre
-			if(!lettersNumbersAndSpacesOnlyRegex.test(genre.val())) {
-				displayFormError(genre, errorMessage);	
-			} else {
-				//Remove the error message if genre is valid 
-				removeFormError(genre);
-			}
-			//If there is an error for director
-			if(!lettersNumbersAndSpacesOnlyRegex.test(director.val())) {
-				displayFormError(director, errorMessage);	
-			} else {
-				//Remove the error message if director is valid
-				removeFormError(director); 
-
-			}
-			//If there is an error for actor
-			if(!lettersNumbersAndSpacesOnlyRegex.test(actor.val())) {
-				displayFormError(actor, errorMessage);
-			} else {
-				//Remove the error message if actor is valid 
-				removeFormError(actor); 
-			}
 			//If there is an error for textArea
-			if(!lettersNumbersAndSpacesOnlyRegex.test(textArea.val())) {
+			if(!lettersNumbersParenthesesAndSpacesOnlyRegex.test(textArea.val())) {
 				displayFormError(textArea, errorMessage);	 
 			} else {
 				removeFormError(); 

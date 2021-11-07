@@ -1,6 +1,7 @@
 package com.filmreview.controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,15 +18,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.filmreview.authentication.AppUserDetails;
 import com.filmreview.models.Actor;
 import com.filmreview.models.Director;
 import com.filmreview.models.Film;
+import com.filmreview.models.FilmGenre;
 import com.filmreview.models.FilmReview;
 import com.filmreview.models.Genre;
 import com.filmreview.models.User;
 import com.filmreview.repositories.ActorRepo;
 import com.filmreview.repositories.DirectorRepo;
+import com.filmreview.repositories.FilmGenreRepo;
 import com.filmreview.repositories.FilmRepo;
+import com.filmreview.repositories.FilmReviewRepo;
 import com.filmreview.repositories.GenreRepo;
 import com.filmreview.repositories.UserRepo;
 import com.filmreview.repositories.UserRoleRepo;
@@ -52,6 +57,12 @@ public class AppController {
 	@Autowired
 	ActorRepo actorRepo;
 
+	@Autowired
+	FilmReviewRepo filmReviewRepo;
+
+	@Autowired
+	FilmGenreRepo filmGenreRepo;
+
 	// Method below determines user type
 	public String getUserRole() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -72,6 +83,7 @@ public class AppController {
 	public String test() {
 		return "test.html";
 	}
+
 	@GetMapping("/contact")
 	public String contact() {
 		return "contact.html";
@@ -254,63 +266,118 @@ public class AppController {
 		}
 	}
 
-	// Method below will try to create a new review based on the details provided in the review form
+	// Method below will try to create a new review based on the details provided in
+	// the review form
 	@PostMapping("/addReview")
-	public String addReview(@RequestParam("film") String filmName, @RequestParam("genre") String genre,
+	public String addReview(@RequestParam("film") String filmName, @RequestParam("genre") Short[] genre,
 			@RequestParam("director") String director, @RequestParam("actor") String actor, @RequestParam("releaseYear") String releaseYear, 
-			@RequestParam("rating") Short rating, @RequestParam("textArea") String reviewContent, RedirectAttributes attributes) {
+			@RequestParam("rating") Short rating, @RequestParam("textArea") String reviewContent, RedirectAttributes attributes, Authentication auth) {
+		String pageMessage;
 		// Make sure the user is logged in
 		if (!getUserRole().equals("userNotLoggedIn")) {
-			String reviewStatus;
-			//Instantiate the FilmReview class
-			FilmReview review;
 			try {
-				review = new FilmReview(reviewContent, rating);
-			}catch(Exception e) {
-				reviewStatus = "An error has occurred";
-				return "index.html";
-			}
-			//Film Details for the review
-			try {
-				//Check if film already exists in the film repo, add film to the film reviews details
-				 if(!filmRepo.findByName(filmName).isPresent()) { 
-					 //If the film is not in the database already, create a record for it 
-					 Film film = new Film(filmName, releaseYear);
-					 review.setFilmId(film);
-				 } else {
-					//If the film is in the database, retrieve it
-					Optional<Film> film = filmRepo.findByName(filmName);
-					review.setFilmId(film.get());
+				//Instantiate the FilmReview class and set it's review and rating values
+				FilmReview review = new FilmReview(reviewContent, rating);
+				Film film;
+				//Set the details of the review's film
+				try {
+					//If film isn't already in the database, add it
+					if(!filmRepo.findByNameIgnoreCase(filmName).isPresent()) {
+						film = new Film(filmName, releaseYear);
+						filmRepo.save(film);
+						try {
+							//List declared so the film instance genre details can be set
+							List<FilmGenre> filmGenreList = new ArrayList<>();
+							//For each genre provided, create a film genre record using the genre and film ids
+							for(int i = 0; i<genre.length;i++) {
+								Genre providedGenre = genreRepo.getById(genre[i]);;
+								FilmGenre filmGenre = new FilmGenre();
+								filmGenre.setFilm(film);
+								filmGenre.setGenre(providedGenre);
+								filmGenreRepo.save(filmGenre);
+								providedGenre.addFilm(filmGenre);
+								//Add the FilmGenre instance to the filmGenreList array list
+								filmGenreList.add(filmGenre);
+								genreRepo.save(providedGenre);
+							}
+							film.setGenres(filmGenreList);
+							filmRepo.save(film);
+						} catch (Exception e) {
+							e.printStackTrace();
+							System.out.println("There was an issue connecting the newly entered film with its genre");
+						}
+						//If the film is already in the database, retrieve it
+					} else {
+						film = filmRepo.findByNameIgnoreCase(filmName).get();
+						//Traverse all the genres provided by the user
+						for(int i =0; i<genre.length;i++) {
+							//Check if there isn't already a record linking the film and genre
+							if(filmGenreRepo.findFilmGenreByFilmAndGenre(film.getFilmId(), genre[i]) == null) {
+								//Create a FilmGenre instance using the film and genre details provided
+								FilmGenre filmGenre = new FilmGenre();
+								filmGenre.setFilm(film);
+								filmGenre.setGenre(genreRepo.getById(genre[i]));
+								filmGenreRepo.save(filmGenre);
+								film.addGenre(filmGenre);
+								filmRepo.save(film);
+								genreRepo.getById(genre[i]).addFilm(filmGenre);
+								genreRepo.save(genreRepo.getById(genre[i]));
+								System.out.println("Doesn't Exist: " + filmGenreRepo.findFilmGenreByFilmAndGenre(film.getFilmId(), genre[i]));
+							}
+							/*
+							 * System.out.println("FIlmGenre:" + filmGenre);
+							 * System.out.println(film.getGenres().contains(filmGenre));
+							 */
+							//If the film doesn't already have the genre listed for it
+							/*if(film.getGenres().contains(filmGenre)) {
+								System.out.println("Already present");
+								
+								 * film.addGenre(filmGenre); providedGenre.addFilm(filmGenre);
+								 * filmRepo.save(film); genreRepo.save(providedGenre);
+								 
+							}*/
+						}
+					}
+					//Set the reviews film
+					review.setFilmId(film);
+				} catch(Exception e) {
+					e.printStackTrace();
+					System.out.println("There was an issue setting the film");
 				}
+				//Set the details of the user who posted the review
+				try {
+					AppUserDetails details = (AppUserDetails)auth.getPrincipal();
+					Long userId = details.getUserId();
+					User user = userRepo.getById(userId);
+					review.setUserId(user);
+					filmReviewRepo.save(review);
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.out.println("There was an issue adding the user");
+				}
+				filmReviewRepo.save(review);
 			} catch(Exception e) {
-				reviewStatus = "An error has occured";
-				return "index.html";
-			}
-			//User details for the review
-			try {
-				//User user = userRepo.getById(SecurityContextHolder.getContext().getAuthentication().getPrincipal())
-			} catch(Exception e) {
-				reviewStatus = "An error has occured";
+				pageMessage = "An error has occured";
 				return "index.html";
 			}
 		}
 		return "index.html";
 	}
-	
-	//Method to add a genre to the database
+
+	// Method to add a genre to the database
 	@PostMapping("/addGenre")
 	public String addGenre(@RequestParam("valueToBeAdded") String newGenre, RedirectAttributes attributes) {
 		String pageMessage;
-		//Make sure the user is logged in
+		// Make sure the user is logged in
 		if (!getUserRole().equals("userNotLoggedIn")) {
 			try {
-				//If the genre is not already in the database, add it
-				if(!genreRepo.findByNameIgnoreCase(newGenre).isPresent()) {
+				// If the genre is not already in the database, add it
+				if (!genreRepo.findByNameIgnoreCase(newGenre).isPresent()) {
 					Genre genre = new Genre(newGenre);
 					genreRepo.save(genre);
 					pageMessage = newGenre + " has been added to our database for selection";
 				} else {
-					//If genre is already in the database, display that information to the user
+					// If genre is already in the database, display that information to the user
 					pageMessage = "This genre is already in our database";
 				}
 			} catch (Exception e) {
@@ -325,21 +392,21 @@ public class AppController {
 			return "index";
 		}
 	}
-	
-	//Method to add a director to the database
+
+	// Method to add a director to the database
 	@PostMapping("/addDirector")
 	public String addDirector(@RequestParam("valueToBeAdded") String newDirector, RedirectAttributes attributes) {
 		String pageMessage;
-		//Make sure the user is logged in
+		// Make sure the user is logged in
 		if (!getUserRole().equals("userNotLoggedIn")) {
 			try {
-				//If the director is not already in the database, add it
-				if(!directorRepo.findByNameIgnoreCase(newDirector).isPresent()) {
+				// If the director is not already in the database, add it
+				if (!directorRepo.findByNameIgnoreCase(newDirector).isPresent()) {
 					Director director = new Director(newDirector);
 					directorRepo.save(director);
 					pageMessage = newDirector + " has been added to our database for selection";
 				} else {
-					//If director is already in the database, display that information to the user
+					// If director is already in the database, display that information to the user
 					pageMessage = "This director is already in our database";
 				}
 			} catch (Exception e) {
@@ -354,21 +421,21 @@ public class AppController {
 			return "index";
 		}
 	}
-	
-	//Method to add a director to the database
+
+	// Method to add an actor to the database
 	@PostMapping("/addActor")
 	public String addActor(@RequestParam("valueToBeAdded") String newActor, RedirectAttributes attributes) {
 		String pageMessage;
-		//Make sure the user is logged in
+		// Make sure the user is logged in
 		if (!getUserRole().equals("userNotLoggedIn")) {
 			try {
-				//If the actor is not already in the database, add it
-				if(!actorRepo.findByNameIgnoreCase(newActor).isPresent()) {
+				// If the actor is not already in the database, add it
+				if (!actorRepo.findByNameIgnoreCase(newActor).isPresent()) {
 					Actor actor = new Actor(newActor);
 					actorRepo.save(actor);
 					pageMessage = newActor + " has been added to our database for selection";
 				} else {
-					//If actor is already in the database, display that information to the user
+					// If actor is already in the database, display that information to the user
 					pageMessage = "This actor is already in our database";
 				}
 			} catch (Exception e) {

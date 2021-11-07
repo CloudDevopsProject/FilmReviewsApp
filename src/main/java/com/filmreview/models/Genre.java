@@ -52,4 +52,9 @@ public class Genre {
 	public void setFilms(List<FilmGenre> films) {
 		this.films = films;
 	}
+	
+	//Method to add a new film  to the list of existing films
+	public void addFilm(FilmGenre film) {
+		this.films.add(film);
+	}
 }
