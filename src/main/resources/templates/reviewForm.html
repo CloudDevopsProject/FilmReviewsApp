@@ -67,17 +67,17 @@
 				<input type="text" class = "form-control" name="film" list="filmName" placeholder= "Name of film" required>
     			<datalist id="filmName">
     				<th:block th:each = "film: ${films}">
-    					<option th:value = "${film}" th:text = "${film.name}"></option>
+    					<option th:value = "${film.name}" th:text = "${film.name}"></option>
     				</th:block>
    				</datalist>
 			</div>
 			<!--Genre(Can Select Multiple)-->
 			<div class="form-group" onkeyup = "checkOptionExists(this, 'Genre')">
-				<label for="addGenre">Genre:</label>
-				<select class="selectpicker" data-live-search="true" name="addGenre" required multiple>
+				<label for="genre">Genre:</label>
+				<select class="selectpicker" data-live-search="true" name="genre" required multiple>
 					<!--Genres will display in the select dropdown if there are any-->
 					<th:block  th:unless = "${genres =='emptyRepo'}" th:each = "genre: ${genres}">
-						<option th:value = "${genre}" th:text = "${genre.name}"></option>
+						<option th:value = "${genre.genreId}" th:text = "${genre.name}"></option>
 					</th:block>
 				</select>
 			</div>
@@ -87,7 +87,7 @@
 				<select class="selectpicker" data-live-search="true" name="director" required multiple>
 					<!--Directors will display in the select dropdown if there are any-->
 					<th:block  th:unless = "${directors =='emptyRepo'}" th:each = "director: ${directors}">
-						<option th:value = "${director}" th:text = "${director.name}"></option>
+						<option th:value = "${director.directorId}" th:text = "${director.name}"></option>
 					</th:block>
 				</select>
 			</div>
@@ -97,7 +97,7 @@
 				<select class="selectpicker" data-live-search="true" name="actor" required multiple>
 					<!--Actors will display in the select dropdown if there are any-->
 					<th:block  th:unless = "${actors =='emptyRepo'}" th:each = "actor: ${actors}">
-						<option th:value = "${actor}" th:text = "${actor.name}"></option>
+						<option th:value = "${actor.actorId}" th:text = "${actor.name}"></option>
 					</th:block>
 				</select>
 			</div>

@@ -52,4 +52,9 @@ public class Actor {
 	public void setFilms(List<FilmActor> films) {
 		this.films = films;
 	}
+	
+	//Method below will add new FilmActor details
+	public void addFilm(FilmActor filmActor) {
+		this.films.add(filmActor);
+	}
 }

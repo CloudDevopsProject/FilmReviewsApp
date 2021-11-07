@@ -34,6 +34,9 @@ public class FilmGenre implements Serializable{
 	@MapsId("genreId")
 	@JoinColumn(name = "genreId")
 	private Genre genre;
+	
+	//Constructor
+	public FilmGenre() {}
 
 	public FilmGenreKey getId() {
 		return id;

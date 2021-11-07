@@ -98,4 +98,14 @@ public class Film {
 	public void setActors(List<FilmActor> actors) {
 		this.actors = actors;
 	}
+	
+	//Method to add a new genre to the list of genres
+	public void addGenre(FilmGenre genre) {
+		this.genres.add(genre);
+	}
+	
+	//Method to add a new review to the list of reviews
+	public void addReview(FilmReview review) {
+		this.reviews.add(review);
+	}
 }
