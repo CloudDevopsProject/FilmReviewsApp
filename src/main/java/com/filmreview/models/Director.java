@@ -53,4 +53,10 @@ public class Director {
 	public void setFilms(List<FilmDirector> films) {
 		this.films = films;
 	}
+	
+	//Method to add a new film to the list of films 
+	//Method to add a new genre to the list of genres
+	public void addfilms(FilmDirector film) {
+		this.films.add(film);
+	}
 }

@@ -12,11 +12,6 @@ import com.filmreview.compositeKeys.FilmActorKey;
 
 @Entity
 public class FilmActor implements Serializable{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	
 	//Composite Key using filmId and actorId primary keys
 	@EmbeddedId
@@ -33,5 +28,35 @@ public class FilmActor implements Serializable{
 	@MapsId("actorId")
 	@JoinColumn(name = "actorId")
 	private Actor actor;
+
+	//Constructor
+	public FilmActor() {}
+	
+	//Getters and Setters
+	public FilmActorKey getId() {
+		return id;
+	}
+
+	public void setId(FilmActorKey id) {
+		this.id = id;
+	}
+
+	public Film getFilm() {
+		return film;
+	}
+
+	public void setFilm(Film film) {
+		this.film = film;
+	}
+
+	public Actor getActor() {
+		return actor;
+	}
+
+	public void setActor(Actor actor) {
+		this.actor = actor;
+	}
+	
+	
 
 }

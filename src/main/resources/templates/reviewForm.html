@@ -87,7 +87,7 @@
 				<select class="selectpicker" data-live-search="true" name="director" required multiple>
 					<!--Directors will display in the select dropdown if there are any-->
 					<th:block  th:unless = "${directors =='emptyRepo'}" th:each = "director: ${directors}">
-						<option th:value = "${director}" th:text = "${director.name}"></option>
+						<option th:value = "${director.directorId}" th:text = "${director.name}"></option>
 					</th:block>
 				</select>
 			</div>
@@ -97,7 +97,7 @@
 				<select class="selectpicker" data-live-search="true" name="actor" required multiple>
 					<!--Actors will display in the select dropdown if there are any-->
 					<th:block  th:unless = "${actors =='emptyRepo'}" th:each = "actor: ${actors}">
-						<option th:value = "${actor}" th:text = "${actor.name}"></option>
+						<option th:value = "${actor.actorId}" th:text = "${actor.name}"></option>
 					</th:block>
 				</select>
 			</div>

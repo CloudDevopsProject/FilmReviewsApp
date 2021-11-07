@@ -34,6 +34,10 @@ public class FilmDirector implements Serializable{
 	@JoinColumn(name = "directorId")
 	private Director director;
 	
+	//Constructor
+	public FilmDirector() {}
+	
+	
 	//Getters and Setters
 	public FilmDirectorKey getId() {
 		return id;

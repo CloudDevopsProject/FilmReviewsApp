@@ -103,4 +103,9 @@ public class Film {
 	public void addGenre(FilmGenre genre) {
 		this.genres.add(genre);
 	}
+	
+	//Method to add a new review to the list of reviews
+	public void addReview(FilmReview review) {
+		this.reviews.add(review);
+	}
 }
