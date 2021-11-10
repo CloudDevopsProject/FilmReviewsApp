@@ -66,7 +66,7 @@
 				<label for="filmName">Film Name</label> 
 				<input type="text" class = "form-control" name="film" list="filmName" placeholder= "Name of film" required>
     			<datalist id="filmName">
-    				<th:block th:each = "film: ${films}">
+    				<th:block th:each = "film: ${films}" th:unless = "${films =='emptyRepo'}">
     					<option th:value = "${film.name}" th:text = "${film.name}"></option>
     				</th:block>
    				</datalist>
