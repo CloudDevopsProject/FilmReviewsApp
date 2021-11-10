@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.filmreview.authentication.AppUserDetails;
 import com.filmreview.models.Actor;
+import com.filmreview.models.Contact;
 import com.filmreview.models.Director;
 import com.filmreview.models.Film;
 import com.filmreview.models.FilmActor;
@@ -29,6 +31,7 @@ import com.filmreview.models.FilmReview;
 import com.filmreview.models.Genre;
 import com.filmreview.models.User;
 import com.filmreview.repositories.ActorRepo;
+import com.filmreview.repositories.ContactRepo;
 import com.filmreview.repositories.DirectorRepo;
 import com.filmreview.repositories.FilmActorRepo;
 import com.filmreview.repositories.FilmDirectorRepo;
@@ -43,6 +46,10 @@ import com.filmreview.repositories.UserRoleRepo;
 public class AppController {
 
 	// Repositories
+	
+	@Autowired
+	ContactRepo contactRepo;
+	
 	@Autowired
 	UserRoleRepo userRoleRepo;
 
@@ -94,10 +101,29 @@ public class AppController {
 		return "test.html";
 	}
 
+	//Method for contact page
 	@GetMapping("/contact")
-	public String contact() {
+	public String contact(Model model) {
+		model.addAttribute("title", "Contact Us");
+		model.addAttribute("contact", new Contact());
 		return "contact.html";
 	}
+	
+	//processing contact form
+	@PostMapping("/process-contact")
+	public String processContact(@ModelAttribute Contact contact) {
+		
+		//Contact contact1 = new Contact();
+
+		contactRepo.save(contact);
+		
+		
+		System.out.println("Data "+ contact);
+		return "contact.html";
+		
+	}
+	
+	
 
 	// Method below will display the home page
 	@GetMapping("/")
