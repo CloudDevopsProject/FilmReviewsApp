@@ -148,6 +148,13 @@ function removeFormError(element) {
 // Function below will display an add button if an option from the review form options isn't already in the database'
 function checkOptionExists(element, modelType){
 	let enteredVal = element.querySelector(".bs-searchbox input").value;
+	//Event listener will remove the button created if the focus on the input is removed
+	element.addEventListener('focusout', function() {
+		if(element.querySelector("#addButton")) {
+			element.querySelector("#addButton").remove();
+		}
+	});
+ 	 
 	//Only do the following steps if the value provided is not an empty string
 	if (enteredVal != "") {
 		let matchAmount = 0
