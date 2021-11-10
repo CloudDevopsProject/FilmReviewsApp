@@ -1,28 +1,115 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:include="htmlFragments :: headElement">
+<meta charset="UTF-8"/>
 <title>Contact Us</title>
+</head>
 <body>
 	<div th:insert="htmlFragments :: navBar"></div>
 	<p th:if="${pageMessage}" th:text="${pageMessage}">
 		<!-- Contact Section -->
-	<div class="contactFormWrap">
-		<h1>Contact</h1>
-		<br>
-		<p>We offer full-service catering for any event, large or small.
-			We understand your needs and we will cater the food to satisfy the
-			biggerst criteria of them all, both look and taste. Do not hesitate
-			to contact us.</p>
-		<p>Catering Service, 42nd Living St, 43043 New York, NY</p>
-		<p>You can also contact us by phone 00553123-2323 or email
-			catering@catering.com, or you can send us a message here:</p>
-		<form class="authForm">
-			<input type="text" placeholder="Name" required name="Name"> 
-			<input type="text" placeholder="Email" required name="Email">
-			<textarea placeholder="Your Message?" required name="Message"></textarea>
-			<button type="submit">SEND MESSAGE</button>
-		</form>
-	</div>
+	
+		<section>
+		
+			<div class="card mt-5">
+			
+				<div class = "card-body">
+					<h1 class ="text-center">Contact Us</h1>
+					<div class="container-fluid mt-1">
+						
+						<div class="row">
+						
+							<div class="col-md-10 offset-md-1">
+							
+								<form
+								action = "#"
+								th:object="${contact}"
+								enctype="multipart/form-data"
+								method="POST"
+								th:action = "@{/process-contact}"
+								class="mt-2">
+								
+								<!-- Name -->
+								<div class="input-group">
+								
+									<div class="input-group-prepend">
+									
+										<div class = "input-group-text">
+											<i class="fas fa-user-alt mt-2">
+											</i>
+										</div>
+									</div>
+									
+									<input type="text" id ="name" name="name" placeholder="Enter Name Here!!!" class="form-control" required/>
+								
+								</div>
+								
+								<!-- Email -->
+								<div class="input-group mt-3">
+								
+									<div class="input-group-prepend">
+									
+										<div class = "input-group-text">
+											@
+										</div>
+									</div>
+									
+									<input type="email" id="email" name="email" placeholder="Enter Email Here!!!" class="form-control" required/>
+								
+								</div>
+								
+								
+								
+								<!-- Phone -->
+								<div class="input-group mt-3">
+								
+									<div class="input-group-prepend">
+									
+										<div class = "input-group-text">
+											<i class="fa fa-phone mt-2">
+											</i>
+										</div>
+									</div>
+									
+									<input type="number" id="phone" name="phone" placeholder="Enter Phone Number Here!!!" class="form-control" required/>
+								
+								</div>
+								
+								
+								
+								<!-- Description -->
+								
+								<div class ="form-group mt-3">
+								
+									<textarea placeholder="Enter Message!!!" name="description" id="description" class="form-control" rows="4" ></textarea>
+								
+								</div>
+								
+								<div class="container mt-5 text-center">
+								
+									<button class ="btn btn-outline-primary" >Submit</button>
+									
+								</div>
+								
+								</form>
+							
+							</div>
+						
+						</div>
+						
+						
+					</div>
+				
+				
+				</div>
+			
+			</div>
+		
+		</section>
+		
+		
+		
+	
 	<!--JS Files-->
 	<div th:insert="htmlFragments :: jsScripts"></div>
 </body>
