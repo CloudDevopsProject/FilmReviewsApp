@@ -5,7 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.swing.JOptionPane;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -49,6 +54,9 @@ public class AppController {
 	
 	@Autowired
 	ContactRepo contactRepo;
+	
+	@Autowired
+	private JavaMailSender mailSender;
 	
 	@Autowired
 	UserRoleRepo userRoleRepo;
@@ -111,7 +119,7 @@ public class AppController {
 	
 	//processing contact form
 	@PostMapping("/process-contact")
-	public String processContact(@ModelAttribute Contact contact) {
+	public String processContact(@ModelAttribute Contact contact, HttpServletRequest request) {
 		
 		//Contact contact1 = new Contact();
 
@@ -119,6 +127,30 @@ public class AppController {
 		
 		
 		System.out.println("Data "+ contact);
+		
+		
+		String name=request.getParameter("name");
+		String email=request.getParameter("email");
+		String phone=request.getParameter("phone");
+		String description=request.getParameter("description");
+		
+		SimpleMailMessage message= new SimpleMailMessage();
+		message.setFrom("tp149295@gmail.com");
+		message.setTo("tp149295@gmail.com");
+		
+		String mailSubject= name +" has sent a message";
+		String mailContent= "Sender Name: "+name +"\n";
+		mailContent += "Sender E-mail: "+email+"\n";
+		mailContent += "Sender Phone: "+phone+"\n";
+		mailContent += "Description: "+description+"\n";
+		
+		message.setSubject(mailSubject);
+		message.setText(mailContent);
+		
+		mailSender.send(message);
+		
+ 		
+		
 		return "contact.html";
 		
 	}
