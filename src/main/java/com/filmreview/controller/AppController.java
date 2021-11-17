@@ -109,50 +109,44 @@ public class AppController {
 		return "test.html";
 	}
 
-	//Method for contact page
+	//Method for displaying contact page
 	@GetMapping("/contact")
 	public String contact(Model model) {
-		model.addAttribute("title", "Contact Us");
-		model.addAttribute("contact", new Contact());
 		return "contact.html";
 	}
 	
 	//processing contact form
 	@PostMapping("/process-contact")
-	public String processContact(@ModelAttribute Contact contact, HttpServletRequest request) {
-		
-		//Contact contact1 = new Contact();
-
-		contactRepo.save(contact);
-		
-		
-		System.out.println("Data "+ contact);
-		
-		
-		String name=request.getParameter("name");
-		String email=request.getParameter("email");
-		String phone=request.getParameter("phone");
-		String description=request.getParameter("description");
-		
-		SimpleMailMessage message= new SimpleMailMessage();
-		message.setFrom("tp149295@gmail.com");
-		message.setTo("tp149295@gmail.com");
-		
-		String mailSubject= name +" has sent a message";
-		String mailContent= "Sender Name: "+name +"\n";
-		mailContent += "Sender E-mail: "+email+"\n";
-		mailContent += "Sender Phone: "+phone+"\n";
-		mailContent += "Description: "+description+"\n";
-		
-		message.setSubject(mailSubject);
-		message.setText(mailContent);
-		
-		mailSender.send(message);
-		
- 		
-		
-		return "contact.html";
-		
+	public String processContact(@RequestParam("name") String name, @RequestParam("email") String email,
+			@RequestParam("phone") String phone, @RequestParam("description") String comment, RedirectAttributes attributes) {
+		String status;
+		//try to create a Contact instance
+		try {
+			Contact contact = new Contact(name, email, phone, comment);
+			contactRepo.save(contact);
+			status = "Your query has been sent";
+		} catch (Exception e) {
+			status = "There was an issue sending youe message";
+		}		
+		attributes.addFlashAttribute("pageMessage", status);
+		//Try to create a SimpleMailMessage instance
+		try {
+			SimpleMailMessage message= new SimpleMailMessage();
+			message.setFrom("tp149295@gmail.com");
+			message.setTo("tp149295@gmail.com");
+			String mailSubject= name +" has sent a message";
+			String mailContent= "Sender Name: "+name +"\n";
+			mailContent += "Sender E-mail: "+email+"\n";
+			mailContent += "Sender Phone: "+phone+"\n";
+			mailContent += "Description: "+ comment+"\n";
+			message.setSubject(mailSubject);
+			message.setText(mailContent);
+			mailSender.send(message);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Issue in sending details to SimpleMailMessage email address");
+		}
+		return "redirect:/contact";	
 	}
 	
 	

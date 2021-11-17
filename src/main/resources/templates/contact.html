@@ -1,115 +1,59 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:include="htmlFragments :: headElement">
-<meta charset="UTF-8"/>
 <title>Contact Us</title>
 </head>
 <body>
 	<div th:insert="htmlFragments :: navBar"></div>
 	<p th:if="${pageMessage}" th:text="${pageMessage}">
 		<!-- Contact Section -->
-	
-		<section>
-		
-			<div class="card mt-5">
-			
-				<div class = "card-body">
-					<h1 class ="text-center">Contact Us</h1>
-					<div class="container-fluid mt-1">
-						
-						<div class="row">
-						
-							<div class="col-md-10 offset-md-1">
-							
-								<form
-								action = "#"
-								th:object="${contact}"
-								enctype="multipart/form-data"
-								method="POST"
-								th:action = "@{/process-contact}"
-								class="mt-2">
-								
+		<div class="card mt-5">
+			<div class = "card-body">
+				<h1 class ="text-center">Contact Us</h1>
+				<div class="container-fluid mt-1">
+					<div class="row">
+						<div class="col-md-10 offset-md-1">
+							<form th:action = "@{/process-contact}" enctype="multipart/form-data" method="POST" class="mt-2" id = "commentForm">
 								<!-- Name -->
-								<div class="input-group">
-								
-									<div class="input-group-prepend">
-									
-										<div class = "input-group-text">
-											<i class="fas fa-user-alt mt-2">
-											</i>
+								<div class = "form-group">
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<div class = "input-group-text">
+												<i class="fas fa-user-alt mt-2"></i>
+											</div>
 										</div>
+										<input type="text" id ="name" name="name" placeholder="Enter Name Here!!!" class="form-control" required/>
 									</div>
-									
-									<input type="text" id ="name" name="name" placeholder="Enter Name Here!!!" class="form-control" required/>
-								
 								</div>
-								
 								<!-- Email -->
-								<div class="input-group mt-3">
-								
-									<div class="input-group-prepend">
-									
-										<div class = "input-group-text">
-											@
+									<div class="input-group mt-3">	
+										<div class="input-group-prepend">
+											<div class = "input-group-text">@</div>
 										</div>
+										<input type="email" id="email" name="email" placeholder="Enter Email Here!!!" class="form-control" required/>
 									</div>
-									
-									<input type="email" id="email" name="email" placeholder="Enter Email Here!!!" class="form-control" required/>
-								
-								</div>
-								
-								
-								
 								<!-- Phone -->
-								<div class="input-group mt-3">
-								
-									<div class="input-group-prepend">
-									
+								<div class="input-group mt-3">								
+									<div class="input-group-prepend">									
 										<div class = "input-group-text">
-											<i class="fa fa-phone mt-2">
-											</i>
+											<i class="fa fa-phone mt-2"></i>
 										</div>
-									</div>
-									
+									</div>	
 									<input type="number" id="phone" name="phone" placeholder="Enter Phone Number Here!!!" class="form-control" required/>
-								
-								</div>
-								
-								
-								
-								<!-- Description -->
-								
+								</div>				
+								<!-- Description -->							
 								<div class ="form-group mt-3">
-								
-									<textarea placeholder="Enter Message!!!" name="description" id="description" class="form-control" rows="4" ></textarea>
-								
+									<textarea placeholder="Enter Message!!!" name="description" id="description" class="form-control" rows="4"  required></textarea>							
 								</div>
-								
 								<div class="container mt-5 text-center">
-								
 									<button class ="btn btn-outline-primary" >Submit</button>
-									
 								</div>
-								
-								</form>
-							
-							</div>
-						
+							</form>
 						</div>
-						
-						
-					</div>
-				
-				
+					</div>	
 				</div>
-			
 			</div>
-		
-		</section>
-		
-		
-		
-	
+		</div>
 	<!--JS Files-->
 	<div th:insert="htmlFragments :: jsScripts"></div>
 </body>
