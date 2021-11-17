@@ -24,15 +24,12 @@ public class Contact {
 	//Constructors
 	public Contact() {}
 	
-	/*public Contact(String name, String email, String phone, String description) {
+	public Contact(String name, String email, String phone, String description) {
 		this.name = name;
-		this.phone = phone;
 		this.email = email;
+		this.phone = phone;
 		this.description = description;
-	}*/
-	
-	
-	
+	}
 	
 	public int getcId() {
 		return cId;
