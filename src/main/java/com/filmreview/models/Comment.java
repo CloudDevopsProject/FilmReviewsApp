@@ -26,6 +26,15 @@ public class Comment {
 	@JoinColumn(name = "reviewId")
 	private FilmReview reviewId;
 	
+	//Cnstructors
+	public Comment() {}
+	
+	public Comment(String comment, User user, FilmReview review) {
+		this.comment = comment;
+		this.userId = user;
+		this.reviewId = review;
+	}
+	
 	//Getters and Setters
 	public Long getCommentId() {
 		return commentId;

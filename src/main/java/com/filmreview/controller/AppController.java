@@ -37,6 +37,7 @@ import com.filmreview.models.Genre;
 import com.filmreview.models.User;
 import com.filmreview.models.Comment;
 import com.filmreview.repositories.ActorRepo;
+import com.filmreview.repositories.CommentRepo;
 import com.filmreview.repositories.ContactRepo;
 import com.filmreview.repositories.DirectorRepo;
 import com.filmreview.repositories.FilmActorRepo;
@@ -88,6 +89,9 @@ public class AppController {
 
 	@Autowired
 	FilmActorRepo filmActorRepo;
+
+	@Autowired
+	CommentRepo commentRepo;
 
 	// Method below determines user type
 	public String getUserRole() {
@@ -595,13 +599,13 @@ public class AppController {
 	// The method below will display a review page with additional review details
 	@GetMapping("viewReview/{reviewId}")
 	public String viewReview(@PathVariable("reviewId") Long id, Model model) {
-		//Try to get the FilmReview instance
+		// Try to get the FilmReview instance
 		try {
 			FilmReview review = filmReviewRepo.getById(id);
-			//Get the reviews comments
+			// Get the reviews comments
 			try {
 				List<Comment> comments = review.getComments();
-				if(comments.isEmpty()) {
+				if (comments.isEmpty()) {
 					model.addAttribute("comments", "emptyRepo");
 				} else {
 					model.addAttribute("comments", comments);
@@ -610,12 +614,67 @@ public class AppController {
 				e.printStackTrace();
 				System.out.println("Issue retrieving this review's comments");
 			}
-			model.addAttribute("review", review);	
+			model.addAttribute("review", review);
 			return "filmReview";
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("There was an issue retrieving this review");
 			return "index";
 		}
+	}
+
+	// Method below creates a comment for a movie when a user submites the comment
+	// form
+	@PostMapping("/postComment")
+	public String addComment(@RequestParam("comment") String comment, @RequestParam("reviewId") Long reviewId, RedirectAttributes attributes, Authentication auth) {
+		String pageMessage = "";
+		// Make sure the user is logged in
+		if (!getUserRole().equals("userNotLoggedIn")) {		
+			//try instantiate to instantiate the Comment class
+			try {
+				Comment userComment = new Comment();
+				// Get the review instance using its id value
+				FilmReview review = filmReviewRepo.getById(reviewId);
+				//Set the comments user details
+				try {
+					AppUserDetails details = (AppUserDetails) auth.getPrincipal();
+					Long userId = details.getUserId();
+					User user = userRepo.getById(userId);
+					userComment.setUserId(user);
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.out.println("There was an issue linking the user to the comment");
+				}
+				// Set the comments contents
+				try {
+					userComment.setComment(comment);
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.out.println("There was an issue linking the comment content to the comment");
+				}
+				//Set the comments review details
+				try {
+					userComment.setReviewId(review);
+					commentRepo.save(userComment);
+					List<Comment> commentList = review.getComments();
+					commentList.add(userComment);
+					filmReviewRepo.save(review);
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.out.println("There was an issue linking the comment and the review");		
+				} 
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("There was an issue creating the comment");
+				pageMessage = "There was an issue posting your comment";
+				attributes.addFlashAttribute("pageMessage", pageMessage);
+				return "redirect:/viewReview/" + reviewId;
+			}
+			pageMessage = "Comment successfully posted";
+		} else {
+			pageMessage = "You must be logged in to post a comment";
+		}
+		attributes.addFlashAttribute("pageMessage", pageMessage);
+		return "redirect:/viewReview/" + reviewId;
 	}
 }
