@@ -35,6 +35,7 @@ import com.filmreview.models.FilmGenre;
 import com.filmreview.models.FilmReview;
 import com.filmreview.models.Genre;
 import com.filmreview.models.User;
+import com.filmreview.models.Comment;
 import com.filmreview.repositories.ActorRepo;
 import com.filmreview.repositories.ContactRepo;
 import com.filmreview.repositories.DirectorRepo;
@@ -51,13 +52,13 @@ import com.filmreview.repositories.UserRoleRepo;
 public class AppController {
 
 	// Repositories
-	
+
 	@Autowired
 	ContactRepo contactRepo;
-	
+
 	@Autowired
 	private JavaMailSender mailSender;
-	
+
 	@Autowired
 	UserRoleRepo userRoleRepo;
 
@@ -109,36 +110,37 @@ public class AppController {
 		return "test.html";
 	}
 
-	//Method for displaying contact page
+	// Method for displaying contact page
 	@GetMapping("/contact")
 	public String contact(Model model) {
 		return "contact.html";
 	}
-	
-	//processing contact form
+
+	// processing contact form
 	@PostMapping("/process-contact")
 	public String processContact(@RequestParam("name") String name, @RequestParam("email") String email,
-			@RequestParam("phone") String phone, @RequestParam("description") String comment, RedirectAttributes attributes) {
+			@RequestParam("phone") String phone, @RequestParam("description") String comment,
+			RedirectAttributes attributes) {
 		String status;
-		//try to create a Contact instance
+		// try to create a Contact instance
 		try {
 			Contact contact = new Contact(name, email, phone, comment);
 			contactRepo.save(contact);
 			status = "Your query has been sent";
 		} catch (Exception e) {
 			status = "There was an issue sending youe message";
-		}		
+		}
 		attributes.addFlashAttribute("pageMessage", status);
-		//Try to create a SimpleMailMessage instance
+		// Try to create a SimpleMailMessage instance
 		try {
-			SimpleMailMessage message= new SimpleMailMessage();
+			SimpleMailMessage message = new SimpleMailMessage();
 			message.setFrom("tp149295@gmail.com");
 			message.setTo("tp149295@gmail.com");
-			String mailSubject= name +" has sent a message";
-			String mailContent= "Sender Name: "+name +"\n";
-			mailContent += "Sender E-mail: "+email+"\n";
-			mailContent += "Sender Phone: "+phone+"\n";
-			mailContent += "Description: "+ comment+"\n";
+			String mailSubject = name + " has sent a message";
+			String mailContent = "Sender Name: " + name + "\n";
+			mailContent += "Sender E-mail: " + email + "\n";
+			mailContent += "Sender Phone: " + phone + "\n";
+			mailContent += "Description: " + comment + "\n";
 			message.setSubject(mailSubject);
 			message.setText(mailContent);
 			mailSender.send(message);
@@ -146,10 +148,8 @@ public class AppController {
 			e.printStackTrace();
 			System.out.println("Issue in sending details to SimpleMailMessage email address");
 		}
-		return "redirect:/contact";	
+		return "redirect:/contact";
 	}
-	
-	
 
 	// Method below will display the home page
 	@GetMapping("/")
@@ -346,12 +346,10 @@ public class AppController {
 				Long userId = details.getUserId();
 				User user = userRepo.getById(userId);
 				review.setUserId(user);
-				filmReviewRepo.save(review);
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("There was an issue linking the user to the review posted");
 			}
-
 			// Get or Create the films details
 			Film film;
 			try {
@@ -486,7 +484,7 @@ public class AppController {
 
 			} catch (Exception e) {
 				e.printStackTrace();
-				System.out.println("There was an linking the review and the film");
+				System.out.println("There was an linking the review and the film at the end");
 			}
 		}
 		return "index.html";
@@ -575,6 +573,48 @@ public class AppController {
 		} else {
 			pageMessage = "An error has occurred";
 			attributes.addFlashAttribute("pageMessage", pageMessage);
+			return "index";
+		}
+	}
+
+	// Method below will display the page listing reviews
+	@GetMapping("/movieReviews")
+	public String displayReviews(Model model) {
+		// Get all reviews already in the database and add to the model
+		List<FilmReview> reviews = filmReviewRepo.findAll();
+		// Identify if the movie review repo is empty
+		if (reviews.isEmpty()) {
+			model.addAttribute("reviews", "emptyRepo");
+		} else {
+			// Add movies from the movie repo to the model if they exist
+			model.addAttribute("reviews", reviews);
+		}
+		return "reviews.html";
+	}
+
+	// The method below will display a review page with additional review details
+	@GetMapping("viewReview/{reviewId}")
+	public String viewReview(@PathVariable("reviewId") Long id, Model model) {
+		//Try to get the FilmReview instance
+		try {
+			FilmReview review = filmReviewRepo.getById(id);
+			//Get the reviews comments
+			try {
+				List<Comment> comments = review.getComments();
+				if(comments.isEmpty()) {
+					model.addAttribute("comments", "emptyRepo");
+				} else {
+					model.addAttribute("comments", comments);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Issue retrieving this review's comments");
+			}
+			model.addAttribute("review", review);	
+			return "filmReview";
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("There was an issue retrieving this review");
 			return "index";
 		}
 	}
