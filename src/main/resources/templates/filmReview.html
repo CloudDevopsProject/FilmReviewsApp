@@ -9,35 +9,35 @@
 	<!--<p> element below will display a message after role adjustment is attempted -->
 	<p th:if = "${pageMessage}" th:text = "${pageMessage}" class = "pageMessage">
 	<div class = "container-fluid">
+		<h4 th:text = "'Movie: ' + ${review.filmId.name}"></h4>
 		<div class = "row">
-			<div class = "col-sm-12 col md-3">
-				<h4 th:text = "'Movie: ' + ${review.filmId.name}"></h4>
+			<div class = "col-sm-12">
 				<!--If there are multiple genre's, put a comma after each until the last genre-->
 				<th:block th:if="${review.filmId.genres.size()>1}">
 					<span class = "reviewCardSpan">Genres: </span>
 					<span class = "reviewCardSpan" th:each = "genre: ${review.filmId.genres}" th:if = "${genreStat.Index != review.filmId.genres.size()-1}" th:text = "${genre.genre.name} + ', '"></span>
-					<span class = "reviewCardSpan" th:each = "genre: ${review.filmId.genres}" th:if = "${genreStat.Index == review.filmId.genres.size()-1}" th:text = "${genre.genre.name}"></span>
+					<span class = "reviewCardSpan" th:each = "genre: ${review.filmId.genres}" th:if = "${genreStat.Index == review.filmId.genres.size()-1}" th:text = "${genre.genre.name}"></span><br>
 				</th:block>
 				<th:block th:if="${review.filmId.genres.size()<=1}">
-					<span th:text = "'Genre: ' + ${review.filmId.genres.get(0).genre.name}"></span>
+					<span th:text = "'Genre: ' + ${review.filmId.genres.get(0).genre.name}"></span><br>
 				</th:block>
 				<!--If there are multiple directors, put a comma after each until the last director-->
 				<th:block th:if="${review.filmId.directors.size()>1}">
 					<span class = "reviewCardSpan">Directors: </span>
 					<span class = "reviewCardSpan" th:each = "director: ${review.filmId.directors}" th:if = "${directorStat.Index != review.filmId.directors.size()-1}" th:text = "${director.director.name} + ', '"></span>
-					<span class = "reviewCardSpan" th:each = "director: ${review.filmId.directors}" th:if = "${directorStat.Index == review.filmId.directors.size()-1}" th:text = "${director.director.name}"></span>
+					<span class = "reviewCardSpan" th:each = "director: ${review.filmId.directors}" th:if = "${directorStat.Index == review.filmId.directors.size()-1}" th:text = "${director.director.name}"></span><br>
 				</th:block>
 				<th:block th:if="${review.filmId.directors.size()<=1}">
-					<span th:text = "'Director: ' + ${review.filmId.directors.get(0).director.name}"></span>
+					<span th:text = "'Director: ' + ${review.filmId.directors.get(0).director.name}"></span><br>
 				</th:block>
 				<!--If there are multiple actors, put a comma after each until the last director-->
 				<th:block th:if="${review.filmId.actors.size()>1}">
 					<span class = "reviewCardSpan">Actors: </span>
 					<span class = "reviewCardSpan" th:each = "actor: ${review.filmId.actors}" th:if = "${actorStat.Index != review.filmId.actors.size()-1}" th:text = "${actor.actor.name} + ', '"></span>
-					<span class = "reviewCardSpan" th:each = "actor: ${review.filmId.actors}" th:if = "${actorStat.Index == review.filmId.actors.size()-1}" th:text = "${actor.actor.name}"></span>
+					<span class = "reviewCardSpan" th:each = "actor: ${review.filmId.actors}" th:if = "${actorStat.Index == review.filmId.actors.size()-1}" th:text = "${actor.actor.name}"></span><br>
 				</th:block>
 				<th:block th:if="${review.filmId.actors.size()<=1}">
-					<span th:text = "'Actor: ' + ${review.filmId.actors.get(0).actor.name}"></span>
+					<span th:text = "'Actor: ' + ${review.filmId.actors.get(0).actor.name}"></span><br>
 				</th:block>
 				<div class = "reviewCardSpan">
 					<ul>
@@ -49,12 +49,64 @@
 					</ul>				
 				</div>
 			</div>
-			<div class = "col-md-9">
+			<div class = "col-sm-12">
+				<h3>Review</h3>
 				<p th:text = "${review.review}"></p>
 			</div>
-	</div>
-	
-	</div>	
+		</div>
+		<!--Comments-->
+		<div class = "row">
+			<div class = "col-sm-12">
+				<h4>Comments</h4>
+				<!--If there are no comments-->
+					<div th:if = "${comments =='emptyRepo'}" sec:authorize="!isAuthenticated()">
+						<div class = "row">
+							<p class = "noCommentMessage">No comments here</p>
+							</div>
+					</div>
+					<!--Show comments if there are comments-->
+					<div th:unless = "${comments =='emptyRepo'}">
+						<th:block th:each="comment: ${comments}">
+							<div class = "comment">
+								<div class = "row">
+									<div class = "col-sm-12 col-md-2">
+										<i class="fas fa-user"></i>
+										<p th:text = "'Posted' + ' by:"></p>
+									</div>
+									<div class = "col-sm-12 col-md-10 order-first order-md-2">
+										<p th:text = "${comment.comment}"></p>
+									</div>
+								</div>
+								<!--Each comment will have a delete option if the user is a logged in admin-->
+								<div class = "buttonWrap">
+									<a sec:authorize="isAuthenticated()" th:if = "${#authentication.getPrincipal().getRole == 'admin'}">
+										<button class = "btn btn-danger">Delete</button>
+									</a>
+								</div>
+							</div>
+						</th:block>
+					</div>
+					<!--If the user is a logged in user they will have the ability to post a comment here-->
+					<div sec:authorize="isAuthenticated()">
+						<!--If there are no comments to display-->
+						<div  class = "text-center">
+							<!-- <p>Be the first to post a comment</p>
+							<button class = "btn btn-success" onclick = "displayCommentForm(this)">Leave Comment</button> -->
+							<form method = "post" action = "/postComment" id = "reviewCommentForm"> 
+								<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+								<!--Get the reviews id-->
+								<input type = "hidden" th:value = "${review.reviewId}" name = "reviewd">
+								<div class = "form-group">
+									<textarea th:if = "${comments =='emptyRepo'}"  name = "comment" placeholder = "There are no comments for this instructor yet. Be the first to leave a comment!"></textarea>
+									<textarea th:unless = "${comments =='emptyRepo'}" name = "comment" placeholder = "Leave a Comment!"></textarea>
+								</div>
+								<button type = "submit" class = "validButton">Leave Comment</button>
+							</form> 
+						</div>
+					</div>
+				</div>
+			</div>		
+		</div>
 	<!--JS Files-->
 	<div th:insert = "htmlFragments :: jsScripts"></div>
 </body>
