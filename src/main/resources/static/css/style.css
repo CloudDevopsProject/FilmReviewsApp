@@ -232,10 +232,19 @@ Form Icons
 }
 
 /*Styling for reviews page*/
+.buttonWrap {
+	width:100%;
+	text-align: center;
+	padding:1em;
+}
+
+.buttonWrap a {
+	display:inline-block;
+}
+
 .reviewCardSpan{
 	display:contents;
 }
-
 
 .reviewCardSpan ul{
 	display:inline-flex;
@@ -247,6 +256,13 @@ Form Icons
 .reviewCardSpan ul i {
 	color: gold;
 	padding: 0 .2em;
+}
+
+/*Styling for each films individual page*/
+#reviewCommentForm textarea {
+	width:100%;	
+	height:6em;
+	padding:1em;
 }
 
 

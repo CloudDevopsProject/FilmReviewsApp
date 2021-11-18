@@ -8,6 +8,21 @@
 	<div th:insert = "htmlFragments :: navBar"></div>
 	<!--<p> element below will display a message after role adjustment is attempted -->
 	<p th:if = "${pageMessage}" th:text = "${pageMessage}" class = "pageMessage">
+	<h1>Movie Reviews</h1>
+	<!--If the user is not logged in, provide options to login or register to add a review-->
+	<div sec:authorize="!isAuthenticated()">
+		<h3>Login or Register to add a movie review</h3>
+		<div class ="buttonWrap">
+			<a th:href="@{/displayLogin}"><button class = "btn btn-success">Login</button></a>
+			<a th:href="@{/register}"><button class = "btn btn-primary">Register</button></a>
+		</div>
+	</div>
+	<!--If the user is logged in, display a button allowing them to add a review-->
+	<div class ="buttonWrap">
+		<a sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal()!=null}" th:href="@{/addReview}">
+			<button class = "btn btn-primary">Add Review</button>
+		</a>
+	</div>
 	<!--If there are no movie reviews, display that information-->
 	<h1 th:if = "${reviews == 'emptyRepo'}">Looks like there's no reviews to display</h1>
 	<!--Display a card for each review if there are reviews-->
@@ -55,7 +70,7 @@
 								</ul>				
 							</div>
 							<!--Button to view the full review-->
-							<a th:href="@{'viewReview/'} + ${review.reviewId}">
+							<a th:href="@{'viewReview/'} + ${review.reviewId}" class = "buttonWrap">
 								<button type="button" class="btn btn-success">View Review Details</button>
 							</a>
 						</div>

@@ -481,7 +481,7 @@ public class AppController {
 					existingReviewsList.add(review);
 				}
 				filmRepo.save(film);
-
+				return "redirect:/viewReview/" + review.getReviewId();
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("There was an linking the review and the film at the end");

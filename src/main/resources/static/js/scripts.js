@@ -184,7 +184,7 @@ function checkOptionExists(element, modelType) {
 				if (element.querySelector("#addButton")) {
 					element.querySelector("#addButton").remove();
 				}
-			}, 100
+			}, 5000
 		)
 	});
 
@@ -251,4 +251,7 @@ function addNewOption(modelType, enteredVal) {
 		document.body.appendChild(form);
 		form.submit();
 	}
+}
+
+function displayCommentForm(element) {	
 }
