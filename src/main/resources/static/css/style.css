@@ -231,6 +231,25 @@ Form Icons
 	font-size:1.4em;
 }
 
+/*Styling for reviews page*/
+.reviewCardSpan{
+	display:contents;
+}
+
+
+.reviewCardSpan ul{
+	display:inline-flex;
+	padding-left:0;
+	list-style: none;
+	margin-left: 0;
+}/*Styling to allow the Rating tage and font awesome icons be inline*/
+
+.reviewCardSpan ul i {
+	color: gold;
+	padding: 0 .2em;
+}
+
+
 
 
 

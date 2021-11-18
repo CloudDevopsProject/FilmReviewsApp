@@ -2,6 +2,7 @@ package com.filmreview.models;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,7 +18,9 @@ public class FilmReview {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long reviewId;
 	
+	@Column(length = 16000)
 	private String review;
+	
 	private Short rating;
 	
 	//Relation with User entity

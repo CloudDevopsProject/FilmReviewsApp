@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:include = "htmlFragments :: headElement">
+	<title>MovieReviews</title>
+</head>
+<body>
+	<!--Navigation Bar-->
+	<div th:insert = "htmlFragments :: navBar"></div>
+	<!--<p> element below will display a message after role adjustment is attempted -->
+	<p th:if = "${pageMessage}" th:text = "${pageMessage}" class = "pageMessage">
+	<div class = "container-fluid">
+		<div class = "row">
+			<div class = "col-sm-12 col md-3">
+				<h4 th:text = "'Movie: ' + ${review.filmId.name}"></h4>
+				<!--If there are multiple genre's, put a comma after each until the last genre-->
+				<th:block th:if="${review.filmId.genres.size()>1}">
+					<span class = "reviewCardSpan">Genres: </span>
+					<span class = "reviewCardSpan" th:each = "genre: ${review.filmId.genres}" th:if = "${genreStat.Index != review.filmId.genres.size()-1}" th:text = "${genre.genre.name} + ', '"></span>
+					<span class = "reviewCardSpan" th:each = "genre: ${review.filmId.genres}" th:if = "${genreStat.Index == review.filmId.genres.size()-1}" th:text = "${genre.genre.name}"></span>
+				</th:block>
+				<th:block th:if="${review.filmId.genres.size()<=1}">
+					<span th:text = "'Genre: ' + ${review.filmId.genres.get(0).genre.name}"></span>
+				</th:block>
+				<!--If there are multiple directors, put a comma after each until the last director-->
+				<th:block th:if="${review.filmId.directors.size()>1}">
+					<span class = "reviewCardSpan">Directors: </span>
+					<span class = "reviewCardSpan" th:each = "director: ${review.filmId.directors}" th:if = "${directorStat.Index != review.filmId.directors.size()-1}" th:text = "${director.director.name} + ', '"></span>
+					<span class = "reviewCardSpan" th:each = "director: ${review.filmId.directors}" th:if = "${directorStat.Index == review.filmId.directors.size()-1}" th:text = "${director.director.name}"></span>
+				</th:block>
+				<th:block th:if="${review.filmId.directors.size()<=1}">
+					<span th:text = "'Director: ' + ${review.filmId.directors.get(0).director.name}"></span>
+				</th:block>
+				<!--If there are multiple actors, put a comma after each until the last director-->
+				<th:block th:if="${review.filmId.actors.size()>1}">
+					<span class = "reviewCardSpan">Actors: </span>
+					<span class = "reviewCardSpan" th:each = "actor: ${review.filmId.actors}" th:if = "${actorStat.Index != review.filmId.actors.size()-1}" th:text = "${actor.actor.name} + ', '"></span>
+					<span class = "reviewCardSpan" th:each = "actor: ${review.filmId.actors}" th:if = "${actorStat.Index == review.filmId.actors.size()-1}" th:text = "${actor.actor.name}"></span>
+				</th:block>
+				<th:block th:if="${review.filmId.actors.size()<=1}">
+					<span th:text = "'Actor: ' + ${review.filmId.actors.get(0).actor.name}"></span>
+				</th:block>
+				<div class = "reviewCardSpan">
+					<ul>
+						<li>Rating: </li>
+						<!--Provide an amount of stars equal to the reviews rating-->
+						<th:block th:each="i: ${#numbers.sequence(0, review.rating-1)}">
+							<li><i class="fas fa-star"></i></li>	
+						</th:block>
+					</ul>				
+				</div>
+			</div>
+			<div class = "col-md-9">
+				<p th:text = "${review.review}"></p>
+			</div>
+	</div>
+	
+	</div>	
+	<!--JS Files-->
+	<div th:insert = "htmlFragments :: jsScripts"></div>
+</body>
+</html>
