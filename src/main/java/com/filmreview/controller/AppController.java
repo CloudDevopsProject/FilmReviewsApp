@@ -9,6 +9,7 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -101,6 +102,19 @@ public class AppController {
 	
 	@Autowired
 	FilmPhotoRepo photoRepo;
+	
+	//AWS S3 Variables
+	@Value("${S3Endpoint}")
+	private String endpoint;
+	
+	@Value("${S3BucketName}")
+	private String bucketName;
+	
+	@Value("${S3AccessKey}")
+	private String accessKey;
+	
+	@Value("${S3SecretKey}")
+	private String secretKey;
 
 	// Method below determines user type
 	public String getUserRole() {
@@ -494,7 +508,6 @@ public class AppController {
 					existingReviewsList.add(review);
 				}
 				filmRepo.save(film);
-				return "redirect:/viewReview/" + review.getReviewId();
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("There was an linking the review and the film at the end");
@@ -507,22 +520,33 @@ public class AppController {
 				fileExtension = fileExtension.substring(fileExtension.lastIndexOf(".") + 1);
 				// If the file type is valid instantiate the S3 Client
 				if(validExtensions.contains(fileExtension)) {
-					//Instantiate an S3Client object and upload the photo
-					S3Client s3Client= new S3Client();
-					s3Client.createConnection();
-					//Convert the image from multi part file to File
-					File convertedFile = new File(imageFile.getOriginalFilename());
-			        FileOutputStream fileOutputStream = new FileOutputStream(convertedFile);
-			        fileOutputStream.write(imageFile.getBytes());
-			        fileOutputStream.close();
-			        String fileName = "reviewId" + review.getReviewId() + "Photo";
-					s3Client.getAmazonS3().putObject(new PutObjectRequest(s3Client.getBucketName(),fileName, convertedFile).withCannedAcl(CannedAccessControlList.PublicRead));
-					String photoUrl = s3Client.getEndpoint() + "/" + fileName;
-					FilmPhoto photoReference = new FilmPhoto();
-					photoReference.setImageUrl(photoUrl);
-					photoReference.setReview(review);
-					photoRepo.save(photoReference);
-					review.setFilmPhoto(photoReference);
+					String photoUrl;
+					try {
+						//Instantiate an S3Client object and upload the photo
+						S3Client s3Client= new S3Client(endpoint,bucketName, accessKey, secretKey);
+						s3Client.createConnection();
+						//Convert the image from multi part file to File
+						File convertedFile = new File(imageFile.getOriginalFilename());
+				        FileOutputStream fileOutputStream = new FileOutputStream(convertedFile);
+				        fileOutputStream.write(imageFile.getBytes());
+				        fileOutputStream.close();
+				        String fileName = "reviewId" + review.getReviewId() + "Photo";
+						s3Client.getAmazonS3().putObject(new PutObjectRequest(s3Client.getBucketName(),fileName, convertedFile).withCannedAcl(CannedAccessControlList.PublicRead));
+						photoUrl = s3Client.getEndpoint() + "/" + fileName;
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.out.println("Issue connecting to S3");
+						return "index";
+					}
+					try {
+						FilmPhoto photoReference = new FilmPhoto(photoUrl, review);
+						photoRepo.save(photoReference);
+						review.setFilmPhoto(photoReference);
+						return "redirect:/viewReview/" + review.getReviewId();
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.out.println("Issue saving photo to DB");
+					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

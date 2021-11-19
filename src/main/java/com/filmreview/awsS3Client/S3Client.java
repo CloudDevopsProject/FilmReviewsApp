@@ -16,16 +16,13 @@ public class S3Client {
 	private AmazonS3 amazonS3;
 	
 	//The endpoint variable contains the buckets URL address
-	@Value("${S3Endpoint}")
+
 	private String endpoint;
 	
-	@Value("${S3BucketName}")
 	private String bucketName;
 	
-	@Value("${S3AccessKey}")
 	private String accessKey;
 	
-	@Value("${S3SecretKey}")
 	private String secretKey;
 
 	public AmazonS3 getAmazonS3() {
@@ -71,13 +68,12 @@ public class S3Client {
 	//Constructors
 	public S3Client() {}
 	
-//	public S3Client(String endpoint, String bucketName, String accessKey, String secretKey) {
-//		super();
-//		this.endpoint = endpoint;
-//		this.bucketName = bucketName;
-//		this.accessKey = accessKey;
-//		this.secretKey = secretKey;
-//	}
+	public S3Client(String endpoint, String bucketName, String accessKey, String secretKey) {
+		this.endpoint = endpoint;
+		this.bucketName = bucketName;
+		this.accessKey = accessKey;
+		this.secretKey = secretKey;
+	}
 
 	public void createConnection() {
 		BasicAWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);

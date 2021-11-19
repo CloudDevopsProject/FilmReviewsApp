@@ -21,6 +21,14 @@ public class FilmPhoto {
 	@OneToOne
 	@JoinColumn(name = "reviewId")
 	private FilmReview review;
+	
+	//Constructors
+	public FilmPhoto() {}
+	
+	public FilmPhoto(String imageUrl, FilmReview review) {
+		this.imageUrl = imageUrl;
+		this.review = review;
+	}
 
 	public String getImageUrl() {
 		return imageUrl;
