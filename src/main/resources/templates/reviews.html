@@ -33,6 +33,9 @@
 					<div class = "col-sm-12 col-md-4">
 						<div class = "card">
 							<h4 th:text = "'Movie: ' + ${review.filmId.name}"></h4>
+							<!--Show the movies image if exists-->
+							<img th:if = "${review.filmPhoto} != null" th:src="${review.filmPhoto.imageUrl}">
+							<i th:if = "${review.filmPhoto} == null" class="fas fa-chalkboard-teacher" ></i>
 							<!--If there are multiple genre's, put a comma after each until the last genre-->
 							<th:block th:if="${review.filmId.genres.size()>1}">
 								<span class = "reviewCardSpan">Genres: </span>

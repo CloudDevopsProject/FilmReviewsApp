@@ -1,14 +1,15 @@
 package com.filmreview.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.swing.JOptionPane;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -18,13 +19,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.filmreview.authentication.AppUserDetails;
+import com.filmreview.awsS3Client.S3Client;
 import com.filmreview.models.Actor;
 import com.filmreview.models.Contact;
 import com.filmreview.models.Director;
@@ -32,6 +37,7 @@ import com.filmreview.models.Film;
 import com.filmreview.models.FilmActor;
 import com.filmreview.models.FilmDirector;
 import com.filmreview.models.FilmGenre;
+import com.filmreview.models.FilmPhoto;
 import com.filmreview.models.FilmReview;
 import com.filmreview.models.Genre;
 import com.filmreview.models.User;
@@ -43,6 +49,7 @@ import com.filmreview.repositories.DirectorRepo;
 import com.filmreview.repositories.FilmActorRepo;
 import com.filmreview.repositories.FilmDirectorRepo;
 import com.filmreview.repositories.FilmGenreRepo;
+import com.filmreview.repositories.FilmPhotoRepo;
 import com.filmreview.repositories.FilmRepo;
 import com.filmreview.repositories.FilmReviewRepo;
 import com.filmreview.repositories.GenreRepo;
@@ -92,6 +99,22 @@ public class AppController {
 
 	@Autowired
 	CommentRepo commentRepo;
+	
+	@Autowired
+	FilmPhotoRepo photoRepo;
+	
+	//AWS S3 Variables
+	@Value("${S3Endpoint}")
+	private String endpoint;
+	
+	@Value("${S3BucketName}")
+	private String bucketName;
+	
+	@Value("${S3AccessKey}")
+	private String accessKey;
+	
+	@Value("${S3SecretKey}")
+	private String secretKey;
 
 	// Method below determines user type
 	public String getUserRole() {
@@ -338,7 +361,7 @@ public class AppController {
 	public String addReview(@RequestParam("film") String filmName, @RequestParam("genre") Short[] genre,
 			@RequestParam("director") Short[] director, @RequestParam("actor") Short[] actor,
 			@RequestParam("releaseYear") String releaseYear, @RequestParam("rating") Short rating,
-			@RequestParam("textArea") String reviewContent, RedirectAttributes attributes, Authentication auth) {
+			@RequestParam("textArea") String reviewContent, @RequestParam("file") MultipartFile imageFile ,RedirectAttributes attributes, Authentication auth) {
 		String pageMessage;
 		// Make sure the user is logged in
 		if (!getUserRole().equals("userNotLoggedIn")) {
@@ -485,10 +508,49 @@ public class AppController {
 					existingReviewsList.add(review);
 				}
 				filmRepo.save(film);
-				return "redirect:/viewReview/" + review.getReviewId();
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("There was an linking the review and the film at the end");
+			}
+			// Try to upload the image from form into S3 bucket
+			try {
+				// Make sure the file uploaded is either jpeg, jpg or png
+				List<String> validExtensions = Arrays.asList("jpeg", "jpg", "png");
+				String fileExtension = imageFile.getOriginalFilename();
+				fileExtension = fileExtension.substring(fileExtension.lastIndexOf(".") + 1);
+				// If the file type is valid instantiate the S3 Client
+				if(validExtensions.contains(fileExtension)) {
+					String photoUrl;
+					try {
+						//Instantiate an S3Client object and upload the photo
+						S3Client s3Client= new S3Client(endpoint,bucketName, accessKey, secretKey);
+						s3Client.createConnection();
+						//Convert the image from multi part file to File
+						File convertedFile = new File(imageFile.getOriginalFilename());
+				        FileOutputStream fileOutputStream = new FileOutputStream(convertedFile);
+				        fileOutputStream.write(imageFile.getBytes());
+				        fileOutputStream.close();
+				        String fileName = "reviewId" + review.getReviewId() + "Photo";
+						s3Client.getAmazonS3().putObject(new PutObjectRequest(s3Client.getBucketName(),fileName, convertedFile).withCannedAcl(CannedAccessControlList.PublicRead));
+						photoUrl = s3Client.getEndpoint() + "/" + fileName;
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.out.println("Issue connecting to S3");
+						return "index";
+					}
+					try {
+						FilmPhoto photoReference = new FilmPhoto(photoUrl, review);
+						photoRepo.save(photoReference);
+						review.setFilmPhoto(photoReference);
+						return "redirect:/viewReview/" + review.getReviewId();
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.out.println("Issue saving photo to DB");
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("There was an issue uploading the image");
 			}
 		}
 		return "index.html";

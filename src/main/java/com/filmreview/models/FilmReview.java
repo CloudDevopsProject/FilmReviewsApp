@@ -2,14 +2,17 @@ package com.filmreview.models;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class FilmReview {
@@ -36,6 +39,10 @@ public class FilmReview {
 	//Relation with Comment entity
 	@OneToMany(mappedBy = "reviewId")
 	private List<Comment> comments;
+	
+	//Relation with FilmPhoto entity
+	@OneToOne(mappedBy = "review" , cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	private FilmPhoto filmPhoto;
 	
 	//Constructors
 	public FilmReview() {}
@@ -92,5 +99,13 @@ public class FilmReview {
 
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+
+	public FilmPhoto getFilmPhoto() {
+		return filmPhoto;
+	}
+
+	public void setFilmPhoto(FilmPhoto filmPhoto) {
+		this.filmPhoto = filmPhoto;
 	}
 }
