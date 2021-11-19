@@ -58,7 +58,7 @@
 	<!--Container for the form-->
 	<div class="formWrap">
 		<h1>Add Review</h1>
-		<form action="/addReview" method="post" id="reviewForm">
+		<form action="/addReview" method="post" id="reviewForm" enctype = "multipart/form-data">
 			<!--CSRF Token-->
 			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" id = "csrfInput"/>
 			<!--Film Name-->
@@ -108,10 +108,15 @@
 					<!--Threshold is set in controller class so the highest year possible to be selected is current year-->
 					 <option th:each="i : ${#numbers.sequence(1900, {yearThreshold})}" th:value="${i}" th:text="${i}">
 				</select>
+				<!--Rating-->
 				<label for="rating">Rating</label> 
 				<select name = "rating">
 					 <option th:each="i : ${#numbers.sequence(0, 5)}" th:value="${i}" th:text="${i}">
 				</select>
+			</div>
+			<div class = "form-group">
+				<!--Photo upload-->
+				<input type = "file" name = "file">
 			</div>
 			<div class="form-group">
 				<textarea placeholder = "Leave your review" name = "textArea"></textarea>

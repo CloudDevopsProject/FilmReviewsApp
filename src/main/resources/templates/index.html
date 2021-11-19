@@ -6,11 +6,11 @@
 </head>
 <body>
 	<!--Navigation Bar-->
-	<div th:insert = "htmlFragments :: navBar"></div>
-	<p th:if = "${pageMessage}" th:text = "${pageMessage}">
+	<div th:insert="htmlFragments :: navBar"></div>
+	<p th:if="${pageMessage}" th:text="${pageMessage}">
 	<p th:if="${pageMessage}" th:text="${pageMessage}">
 	<div class="container">
-		<h2>Top 3 Movies</h2>
+		<h2>Top Rated Movies</h2>
 		<div class="row">
 			<div class="col-sm-12">
 				<div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -31,11 +31,13 @@
 							<img th:src="@{images/meleficient.jpg}" alt="meleficient">
 						</div>
 					</div>
-					<button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+					<button class="carousel-control-prev" type="button"
+						data-bs-target="#myCarousel" data-bs-slide="prev">
 						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 						<span class="visually-hidden">Previous</span>
 					</button>
-					<button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+					<button class="carousel-control-next" type="button"
+						data-bs-target="#myCarousel" data-bs-slide="next">
 						<span class="carousel-control-next-icon" aria-hidden="true"></span>
 						<span class="visually-hidden">Next</span>
 					</button>
@@ -44,45 +46,53 @@
 		</div>
 		<hr>
 		<!--About Section-->
-		<div class = "row indexBoxWrap">
-			<div class = "d-none d-md-block col-md-6 indexBox">
-				<img th:src="@{images/tablesetting2.jpg}" alt="Table Setting"/>
+		<div class="row indexBoxWrap">
+			<div class="d-none d-md-block col-md-6 indexBox">
+				<img th:src="@{images/meleficient.jpg}" alt="Table Setting" />
 			</div>
-			<div class = "col-sm-12 col-md-6 indexBox">
-				<h1>About Catering</h1>
-				<h5>Tradition since 1889</h5>
-				<p>The Catering was founded in blabla by Mr. Smith in lorem ipsum dolor sit amet, consectetur adipiscing elit consectetur adipiscing elit, sed do 
-					eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
-					ex ea commodo consequat. Duis aute iruredolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-				</p>
-				<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do 
-				eiusmod temporincididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea 
-				commodo consequat.</p>
+			<div class="col-sm-12 col-md-6 indexBox">
+				<h1>Heading One</h1>
+				<h5>Sub Heading One</h5>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+					Integer non cursus ex. In pretium leo ligula. Praesent lectus leo,
+					faucibus vel odio vel, venenatis fringilla tellus. Suspendisse ac
+					felis in elit tempus efficitur. Phasellus a orci imperdiet odio
+					posuere posuere id vitae nisi. In auctor non velit vitae pharetra.
+					Quisque semper vestibulum purus sit amet ultricies. Ut in mauris ut
+					lectus tempus vestibulum viverra nec dui. Pellentesque varius
+					sagittis mollis. Nam eget elit diam. Sed id aliquam mi, sed mollis
+					elit. Duis facilisis, justo vel condimentum ultricies, ligula est
+					imperdiet metus, ut pulvinar turpis arcu non lectus.</p>
+				<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa
+					qui officia deserunt mollit anim id est laborum consectetur
+					adipiscing elit, sed do eiusmod temporincididunt ut labore et
+					dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+					exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat.</p>
 			</div>
 		</div>
 		<hr>
-		<!--Menu Section-->
-		<div class = "row indexBoxWrap">
-			<div class = "col-sm-12 col-md-6 indexBoxLeftAlign">
-				<h1>Our Menu</h1>
-      			<h4>Bread Basket</h4>
-      			<p>Assortment of fresh baked fruit breads and muffins 5.50</p>
-    			<h4>Honey Almond Granola with Fruits</h4>
-      			<p>Natural cereal of honey toasted oats, raisins, almonds and dates 7.00</p>
-      			<h4>Belgian Waffle</h4>
-      			<p>Vanilla flavored batter with malted flour 7.50</p>
-      			<h4>Scrambled eggs</h4>
-      			<p>Scrambled eggs, roasted red pepper and garlic, with green onions 7.50</p>
-      			<h4>Blueberry Pancakes</h4>
-      			<p>With syrup, butter and lots of berries 8.50</p> 
+		<div class="row indexBoxWrap">
+			<div class="col-sm-12 col-md-6 indexBoxLeftAlign">
+				<h1>Heading Two</h1>
+				<h4>Sub Heading Two</h4>
+				<p>ALorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+				<h4>Sub Heading Two</h4>
+				<p>ALorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+				<h4>Sub Heading Two</h4>
+				<p>ALorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+				<h4>Sub Heading Two</h4>
+				<p>ALorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+				<h4>Sub Heading Two</h4>
+				<p>ALorem ipsum dolor sit amet, consectetur adipiscing elit</p>
 			</div>
-			<div class = "col-sm-12 col-md-6 indexBox">
-				<img th:src="@{images/tablesetting.jpg}" alt="Menu">
+			<div class="col-sm-12 col-md-6 indexBox">
+				<img th:src="@{images/F9.jpg}" alt="F9">
 			</div>
 		</div>
-		<hr>	
+		<hr>
 	</div>
-	
+
 	<!--JS Files-->
 	<div th:insert="htmlFragments :: jsScripts"></div>
 </body>
