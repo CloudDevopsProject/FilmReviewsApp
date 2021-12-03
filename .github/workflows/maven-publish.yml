@@ -32,3 +32,11 @@ jobs:
       run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
       env:
         GITHUB_TOKEN: ${{ github.token }}
+        LOCALDB_PASSWORD: ${{ secrets.LOCALDB_PASSWORD }}
+        LOCALDB_URL: ${{ secrets.LOCALDB_URL }}
+        LOCALDB_USERNAME: ${{ secrets.LOCALDB_USERNAME }}
+        S3ACCESSKEY: ${{ secrets.S3ACCESSKEY }}
+        S3BUCKETNAME: ${{ secrets.S3BUCKETNAME }}
+        S3ENDPOINT: ${{ secrets.S3ENDPOINT }}
+        S3SECRETKEY: ${{ secrets.S3SECRETKEY }}
+        
