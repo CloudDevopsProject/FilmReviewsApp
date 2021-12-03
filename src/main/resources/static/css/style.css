@@ -69,45 +69,41 @@ footer p {
 	line-height:3em;
 }
 
-
-/*FORMS*/
-/* .formWrap {
-	position:relative;
-	top:7em;
-	background-color:black;
-	opacity:0.9;
-	color:white;
-	padding:0em 1em 2em 1em;
+/*Error page*/
+errorWrap {
+	position:absolute;
+	top:25%;
+	width:100%;
+	padding:1em;
 	text-align:center;
-	border-radius:1em;
-	font-size:1.1em;
 }
 
-@media only screen and (min-width: 600px){
-	.formWrap {
-		width:50%;
-		margin:5em auto;
-		position:relative;
-		top:5em;
-	}
-}This class makes the form in the form wrapper smaller on screen sizes above 700
+.errorIcon{
+	display:inline-block;
+	color:orange;
+	font-size:12em;
+	margin: 0 .3em;
+}
 
-Form Icons
-.formWrap i {
-	text-align:center;
-	font-size:6em;
+.errorText{
+	padding:2em;
+	display:inline-block;
 	color:red;
-	background-color:black;
-	border-radius:100%;
-	position:relative;
-	padding:.2em;
-	top:-.7em;	
-}This class is for the form icons
+}
+.errorWrap button {
+	background-color: #04AA6D;
+  	color: white;
+  	padding: 0.87em 1.25em;
+  	margin: 0.5em 0;
+  	border: none;
+  	cursor: pointer;
+  	width: 100%; 
+  	transition: .1s ease-in-out .1s;
+}
 
-.formWrap textarea {
-	width:95%;
-	height:5em;
-} */
+.errorWrap button:hover {
+	opacity: .7;
+}
 
 /*index.html*/
 #myCarousel {
@@ -169,7 +165,7 @@ Form Icons
 }
 
 .reviewForm button[type=submit] {
-	 background-color: #04AA6D;
+	background-color: #04AA6D;
   	color: white;
   	padding: 0.87em 1.25em;
   	margin: 0.5em 0;

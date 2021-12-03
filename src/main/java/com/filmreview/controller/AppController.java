@@ -131,11 +131,6 @@ public class AppController {
 		return "userNotLoggedIn";
 	}
 
-	// Method below will display the test page
-	@GetMapping("/test")
-	public String test() {
-		return "test.html";
-	}
 
 	// Method for displaying contact page
 	@GetMapping("/contact")
@@ -219,8 +214,7 @@ public class AppController {
 		}
 	}
 
-	// Method below will try to create a new user based on the details provided in
-	// the registration form
+	// Method below will try to create a new user based on the details provided in the registration form
 	@PostMapping("/register")
 	public String registerUser(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName,
 			@RequestParam("email") String email, @RequestParam("password") String password,
@@ -251,25 +245,29 @@ public class AppController {
 		return "redirect:/displayLogin";
 	}
 
-	// Method below will display page displaying all generic users if the user is an
-	// admin
+	// Method below will display page displaying all generic users if the user is an admin
 	@GetMapping("/displayUsers")
-	public String displayUsers(Model model) {
+	public String displayUsers(Model model, RedirectAttributes attributes) {
 		// Make sure the logged in user is an admin before accessing this page
 		if (getUserRole().equals("admin")) {
-			// Get all users from the database and add them to the page model
-			List<User> users = userRepo.findAll();
-			// Determine if there are users listed in the database
-			if (users.isEmpty()) {
-				model.addAttribute("users", "emptyRepo");
-			} else {
-				model.addAttribute("users", users);
+			try {
+				// Get all users from the database and add them to the page model
+				List<User> users = userRepo.findAll();
+				// Determine if there are users listed in the database
+				if (users.isEmpty()) {
+					model.addAttribute("users", "emptyRepo");
+				} else {
+					model.addAttribute("users", users);
+				}
+				return "viewUsers.html";
+			} catch (Exception e) {
+				attributes.addFlashAttribute("pageMessage", "There was an error loading the users");
+				return "redirect:/";
 			}
-			return "viewUsers.html";
 		} else {
-			return null;
+			// If the user is not a logged in admin, display an error page
+			return "error.html";
 		}
-
 	}
 
 	// Method below will allow admins to adjust user roles
@@ -300,7 +298,8 @@ public class AppController {
 			attribute.addFlashAttribute("pageMessage", adjustStatus);
 			return "redirect:/displayUsers";
 		} else {
-			return null;
+			// If the user is not a logged in admin, display an error page
+			return "error.html";
 		}
 	}
 
@@ -355,8 +354,7 @@ public class AppController {
 		}
 	}
 
-	// Method below will try to create a new review based on the details provided in
-	// the review form
+	// Method below will try to create a new review based on the details provided in the review form
 	@PostMapping("/addReview")
 	public String addReview(@RequestParam("film") String filmName, @RequestParam("genre") Short[] genre,
 			@RequestParam("director") Short[] director, @RequestParam("actor") Short[] actor,
@@ -579,9 +577,8 @@ public class AppController {
 			attributes.addFlashAttribute("pageMessage", pageMessage);
 			return "redirect:/addReview";
 		} else {
-			pageMessage = "An error has occurred";
-			attributes.addFlashAttribute("pageMessage", pageMessage);
-			return "index";
+			// If the user is not a logged in admin, display an error page
+			return "error.html";
 		}
 	}
 
@@ -608,9 +605,8 @@ public class AppController {
 			attributes.addFlashAttribute("pageMessage", pageMessage);
 			return "redirect:/addReview";
 		} else {
-			pageMessage = "An error has occurred";
-			attributes.addFlashAttribute("pageMessage", pageMessage);
-			return "index";
+			// If the user is not a logged in admin, display an error page
+			return "error.html";
 		}
 	}
 
@@ -637,9 +633,8 @@ public class AppController {
 			attributes.addFlashAttribute("pageMessage", pageMessage);
 			return "redirect:/addReview";
 		} else {
-			pageMessage = "An error has occurred";
-			attributes.addFlashAttribute("pageMessage", pageMessage);
-			return "index";
+			// If the user is not a logged in admin, display an error page
+			return "error.html";
 		}
 	}
 
@@ -685,7 +680,7 @@ public class AppController {
 		}
 	}
 
-	// Method below creates a comment for a movie when a user submites the comment
+	// Method below creates a comment for a movie when a user submits the comment
 	// form
 	@PostMapping("/postComment")
 	public String addComment(@RequestParam("comment") String comment, @RequestParam("reviewId") Long reviewId, RedirectAttributes attributes, Authentication auth) {
@@ -735,6 +730,8 @@ public class AppController {
 			pageMessage = "Comment successfully posted";
 		} else {
 			pageMessage = "You must be logged in to post a comment";
+			// If the user is not a logged in admin, display an error page
+			return "error.html";
 		}
 		attributes.addFlashAttribute("pageMessage", pageMessage);
 		return "redirect:/viewReview/" + reviewId;
