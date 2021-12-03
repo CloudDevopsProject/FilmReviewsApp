@@ -20,7 +20,7 @@
 </head>
 <title>Add Review</title>
 </head>
-<body>
+<body onload = "populateForm()">
 	<!--Navigation Bar (This page needs its own navbar instead of extending from htmlFragments due to Bootstrap version required-->
 	<nav class="navbar navbar-expand-lg">
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -145,7 +145,7 @@
 				</select>
 			</div>
 			<div class="form-group">
-				<textarea placeholder="Leave your review" name="textArea"></textarea>
+				<textarea placeholder="Leave your review" name="textArea" required></textarea>
 			</div>
 			<div class="text-center">
 				<button type="submit" class="btn btn-primary">Submit</button>
