@@ -104,17 +104,17 @@ public class AppController {
 	FilmPhotoRepo photoRepo;
 	
 	//AWS S3 Variables
-	@Value("${S3Endpoint}")
-	private String endpoint;
+	//@Value("${S3Endpoint}")
+	//private String endpoint;
 	
-	@Value("${S3BucketName}")
-	private String bucketName;
+	//@Value("${S3BucketName}")
+	//private String bucketName;
 	
-	@Value("${S3AccessKey}")
-	private String accessKey;
+	//@Value("${S3AccessKey}")
+	//private String accessKey;
 	
-	@Value("${S3SecretKey}")
-	private String secretKey;
+	//@Value("${S3SecretKey}")
+	//private String secretKey;
 
 	// Method below determines user type
 	public String getUserRole() {
@@ -513,7 +513,7 @@ public class AppController {
 				System.out.println("There was an linking the review and the film at the end");
 			}
 			// Try to upload the image from form into S3 bucket
-			try {
+			/*try {
 				// Make sure the file uploaded is either jpeg, jpg or png
 				List<String> validExtensions = Arrays.asList("jpeg", "jpg", "png");
 				String fileExtension = imageFile.getOriginalFilename();
@@ -551,7 +551,7 @@ public class AppController {
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("There was an issue uploading the image");
-			}
+			}*/
 		}
 		return "index.html";
 	}
