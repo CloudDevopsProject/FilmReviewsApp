@@ -153,7 +153,37 @@ Form Icons
 	text-align: left;
 }
 
-/*Registration and Login Pages*/
+/*Forms*/
+.reviewForm {
+	padding:1em;
+}
+
+.reviewForm input:not([type=file]),
+.reviewForm textarea {
+	width: 100%;
+  	padding: 0.75em 1.25em;
+  	margin: 0.5em 0;
+  	display: inline-block;
+  	border: 0.06em solid #ccc;
+  	background: #f1f1f1;
+}
+
+.reviewForm button[type=submit] {
+	 background-color: #04AA6D;
+  	color: white;
+  	padding: 0.87em 1.25em;
+  	margin: 0.5em 0;
+  	border: none;
+  	cursor: pointer;
+  	width: 100%; 
+  	transition: .1s ease-in-out .1s;
+}
+
+.reviewForm button[type=submit]:hover {
+	opacity: .7;
+}
+
+
 .authForm {
 	padding: 1em;
 }
@@ -167,11 +197,6 @@ Form Icons
   	border: 0.06em solid #ccc;
   	background: #f1f1f1;
 }/* Full-width input fields */
-
-.authForm input[type = "checkbox"] {
-	width:auto;
-	margin: 0 1em 0 0;
-}
 
 
 .authForm button {
@@ -196,6 +221,10 @@ Form Icons
 .authImgContainer {
   text-align: center;
   margin: 24px 0 12px 0;
+}/*User image Wrapper*/
+
+.authImgContainer i{
+	font-size:9em;
 }/*User image Wrapper*/
 
 .authImgContainer img{
