@@ -52,7 +52,7 @@ $(document).ready(function() {
 		let movie = $("input[name = 'film']");
 		let textArea = $("textArea");
 		//Submit form if text input values match custom regex checks
-		if (lettersNumbersParenthesesAndSpacesOnlyRegex.test(movie.val()) && lettersNumbersParenthesesSpacesAndCertainCharactersOnlyRegex(textArea.val())) {
+		if (lettersNumbersParenthesesAndSpacesOnlyRegex.test(movie.val()) && lettersNumbersParenthesesSpacesAndCertainCharactersOnlyRegex(textArea.val() && textArea.val() != " ")) {
 			return true;
 		} else {
 			event.preventDefault();
@@ -231,7 +231,8 @@ if (enteredVal != "") {
 }
 
 function addNewOption(modelType, enteredVal) {
-	console.log("Here");
+	// Store details already entered in the form in session storage
+	scrapeReviewForm();
 	//Make sure the enteredVal is validated
 	if (lettersNumbersAndSpacesOnlyRegex.test(enteredVal)) {
 		//Create a form so it can be posted to the backend wit hthe data provided by the user
@@ -253,5 +254,32 @@ function addNewOption(modelType, enteredVal) {
 	}
 }
 
-function displayCommentForm(element) {	
+// This method will store the users entered values for the review form in session storage so if they add new directors/actors etc they wont have to renter everything 
+function scrapeReviewForm(){
+		let filmName = document.querySelector("[name='film']").value;
+		sessionStorage.setItem("filmName", filmName);
+		// Issue with retrieveing the multiple select array values and auto selecting so only one value will be selected 
+		let genre = document.querySelector("[name='genre']").value;
+		sessionStorage.setItem("genre", genre);
+		let director = document.querySelector("[name='director']").value;
+		sessionStorage.setItem("director", director);
+		let actor = document.querySelector("[name='actor']").value;
+		sessionStorage.setItem("actor", actor);
+		let releaseYear = document.querySelector("[name='releaseYear']").value;
+		sessionStorage.setItem("releaseYear", releaseYear);
+		let rating = document.querySelector("[name='rating']").value;
+		sessionStorage.setItem("rating", rating);
 }
+
+//The method below will be used to populate the review forms using data stored in the session data
+function populateForm(){
+	document.querySelector("[name='film']").value = sessionStorage.getItem("filmName");
+	document.querySelector("[name='genre']").value = sessionStorage.getItem("genre");
+	document.querySelector("[name='director']").value = sessionStorage.getItem("director");
+	document.querySelector("[name='actor']").value = sessionStorage.getItem("actor");
+	document.querySelector("[name='releaseYear']").value = sessionStorage.getItem("releaseYear");
+	document.querySelector("[name='rating']").value = sessionStorage.getItem("rating");
+}
+
+
+
