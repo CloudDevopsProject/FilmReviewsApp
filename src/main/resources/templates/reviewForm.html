@@ -67,8 +67,6 @@
 	<p th:if="${pageMessage}" th:text="${pageMessage}" class="pageMessage">
 	<div class="authImgContainer">
 		<i class="fas fa-edit"></i>
-		<!--<p> element below will display a message after incorrect login -->
-		<p th:if="${pageMessage}" th:text="${pageMessage}" class="pageMessage">
 	</div>
 	<!--Container for the form-->
 	<div class="formWrap">
@@ -93,7 +91,7 @@
 			<!--Genre(Can Select Multiple)-->
 			<div class="form-group" onkeyup="checkOptionExists(this, 'Genre')" >
 				<label for="genre">Genre:</label> <select class="selectpicker"
-					data-width="100%" data-live-search="true" name="genre" required multiple >
+					data-width="70%" data-live-search="true" name="genre" required multiple >
 					<!--Genres will display in the select dropdown if there are any-->
 					<th:block th:unless="${genres =='emptyRepo'}"
 						th:each="genre: ${genres}">
@@ -104,7 +102,7 @@
 			<!--Director(Can Select Multiple)-->
 			<div class="form-group" onkeyup="checkOptionExists(this, 'Director')">
 				<label for="director">Director(s)</label> <select
-					class="selectpicker" data-width="100%" data-live-search="true" name="director"
+					class="selectpicker" data-width="70%" data-live-search="true" name="director"
 					required multiple>
 					<!--Directors will display in the select dropdown if there are any-->
 					<th:block th:unless="${directors =='emptyRepo'}"
@@ -117,7 +115,7 @@
 			<!--Actor(Can Select Multiple)-->
 			<div class="form-group" onkeyup="checkOptionExists(this, 'Actor')">
 				<label for="actor">Actor(s)</label> <select class="selectpicker"
-					data-width="100%" data-live-search="true" name="actor" required multiple>
+					data-width="70%" data-live-search="true" name="actor" required multiple>
 					<!--Actors will display in the select dropdown if there are any-->
 					<th:block th:unless="${actors =='emptyRepo'}"
 						th:each="actor: ${actors}">
