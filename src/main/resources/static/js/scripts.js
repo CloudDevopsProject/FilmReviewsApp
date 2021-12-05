@@ -1,14 +1,14 @@
 //Regular Expressions that will be used to validate forms
-const lettersOnlyRegex = new RegExp("^.[A-z ]*$");	//Check for only lower or upper case letters
+const lettersOnlyRegex = new RegExp("^.[A-z]*$");	//Check for only lower or upper case letters
 const lettersAndNumberOnlyRegex = new RegExp("^.[A-z0-9]*$");
 const lettersNumbersAndSpacesOnlyRegex = new RegExp("^.[A-z0-9 ]*$")
 const lettersNumbersParenthesesAndSpacesOnlyRegex = new RegExp("^.[A-z0-9() ]*$")
 const lettersNumbersParenthesesSpacesAndCertainCharactersOnlyRegex = new RegExp("^.|[A-z0-9()?,\n ]*$")
 
 $(document).ready(function() {
-	
+
 	//Prevent the login form from being submitted if it hasn't been validated
-	$("#loginForm").on("submit", function (event) {
+	$("#loginForm").on("submit", function(event) {
 		let password = $("input[name = 'password']");
 		//If there are characters other than letters and numbers in the password provided, prevent the form from being submitted
 		if (lettersAndNumberOnlyRegex.test(password.val())) {
@@ -27,8 +27,8 @@ $(document).ready(function() {
 		let password = $("#password");
 		let passwordConfirm = $("#passwordConfirm");
 
-		//Submit form if passwords provided match and users name only contains allowed characters
-		if (password.val() == passwordConfirm.val() && (lettersOnlyRegex.test(firstName.val()) && lettersOnlyRegex.test(lastName.val()))) {
+		//Submit form if passwords provided match and inputs provided passed regex tests
+		if (password.val() == passwordConfirm.val() && (lettersOnlyRegex.test(firstName.val()) && lettersOnlyRegex.test(lastName.val()) && lettersAndNumberOnlyRegex.test(password.val()))) {
 			return true;
 		} else {
 			//Display form validation error messages to the user
@@ -48,9 +48,12 @@ $(document).ready(function() {
 			} else {
 				removeFormError(lastName);
 			}
+			if(!lettersAndNumberOnlyRegex.test(password.val())) {
+				displayFormError(password, "Password can only contain letters and numbers");
+			}
 			//If passwords provided don't match'
 			if (password.val() != passwordConfirm.val()) {
-				passwordError = "Passwords don't match'"
+				passwordError = "Passwords don't match"
 				displayFormError(password, passwordError);
 				//Remove the error message if both passwords match after user changes values
 			} else {
@@ -201,46 +204,45 @@ function checkOptionExists(element, modelType) {
 		)
 	});
 
-//Only do the following steps if the value provided is not an empty string
-if (enteredVal != "") {
-	let matchAmount = 0
-	//Get the value entered and convert to lower case
-	let lowerCaseInputValue = enteredVal.toLowerCase();
-	//Get the elements select element and traverse its options
-	let selectElement = element.querySelector("select");
-	for (i = 0; i < selectElement.length; i++) {
-		//If the option already exists don't loop through the options
-		let existingOption = selectElement.options[i].innerHTML.toLowerCase();
-		if (existingOption.startsWith(lowerCaseInputValue)) {
-			matchAmount++;
-			break;
+	//Only do the following steps if the value provided is not an empty string
+	if (enteredVal != "") {
+		let matchAmount = 0
+		//Get the value entered and convert to lower case
+		let lowerCaseInputValue = enteredVal.toLowerCase();
+		//Get the elements select element and traverse its options
+		let selectElement = element.querySelector("select");
+		for (i = 0; i < selectElement.length; i++) {
+			//If the option already exists don't loop through the options
+			let existingOption = selectElement.options[i].innerHTML.toLowerCase();
+			if (existingOption.startsWith(lowerCaseInputValue)) {
+				matchAmount++;
+				break;
+			}
+		}
+		//If there are no matches in the database for the users search query, display a button providing an option to add the value
+		if (!matchAmount > 0) {
+			if (!document.getElementById("addButton")) {
+				let addButton = document.createElement("button");
+				addButton.setAttribute('id', 'addButton');
+				addButton.setAttribute('class', 'btn');
+				addButton.innerHTML = `Add ${enteredVal}`;
+				//If the button is clicked invoke a function which adds the value to the database
+				element.append(addButton);
+			} else {
+				let addButton = document.getElementById("addButton");
+				addButton.innerHTML = `Add ${enteredVal}`;
+				addButton.setAttribute('type', 'button');
+				addButton.addEventListener("click", function() {
+					addNewOption(modelType, enteredVal);
+				})
+			}
+		}
+	} else {
+		//If the button to add an option is displayed remove it as there is no input value provided
+		if (document.getElementById("addButton")) {
+			document.getElementById("addButton").remove();
 		}
 	}
-	//If there are no matches in the database for the users search query, display a button providing an option to add the value
-	if (!matchAmount > 0) {
-		if (!document.getElementById("addButton")) {
-			let addButton = document.createElement("button");
-			addButton.setAttribute('id', 'addButton');
-			addButton.setAttribute('class', 'btn');
-			addButton.innerHTML = `Add ${enteredVal}`;
-			//If the button is clicked invoke a function which adds the value to the database
-
-			element.append(addButton);
-		} else {
-			let addButton = document.getElementById("addButton");
-			addButton.innerHTML = `Add ${enteredVal}`;
-			addButton.setAttribute('type', 'button');
-			addButton.addEventListener("click", function() {
-				addNewOption(modelType, enteredVal);
-			})
-		}
-	}
-} else {
-	//If the button to add an option is displayed remove it as there is no input value provided
-	if (document.getElementById("addButton")) {
-		document.getElementById("addButton").remove();
-	}
-}
 }
 
 function addNewOption(modelType, enteredVal) {
@@ -268,24 +270,24 @@ function addNewOption(modelType, enteredVal) {
 }
 
 // This method will store the users entered values for the review form in session storage so if they add new directors/actors etc they wont have to renter everything 
-function scrapeReviewForm(){
-		let filmName = document.querySelector("[name='film']").value;
-		sessionStorage.setItem("filmName", filmName);
-		// Issue with retrieveing the multiple select array values and auto selecting so only one value will be selected 
-		let genre = document.querySelector("[name='genre']").value;
-		sessionStorage.setItem("genre", genre);
-		let director = document.querySelector("[name='director']").value;
-		sessionStorage.setItem("director", director);
-		let actor = document.querySelector("[name='actor']").value;
-		sessionStorage.setItem("actor", actor);
-		let releaseYear = document.querySelector("[name='releaseYear']").value;
-		sessionStorage.setItem("releaseYear", releaseYear);
-		let rating = document.querySelector("[name='rating']").value;
-		sessionStorage.setItem("rating", rating);
+function scrapeReviewForm() {
+	let filmName = document.querySelector("[name='film']").value;
+	sessionStorage.setItem("filmName", filmName);
+	// Issue with retrieveing the multiple select array values and auto selecting so only one value will be selected 
+	let genre = document.querySelector("[name='genre']").value;
+	sessionStorage.setItem("genre", genre);
+	let director = document.querySelector("[name='director']").value;
+	sessionStorage.setItem("director", director);
+	let actor = document.querySelector("[name='actor']").value;
+	sessionStorage.setItem("actor", actor);
+	let releaseYear = document.querySelector("[name='releaseYear']").value;
+	sessionStorage.setItem("releaseYear", releaseYear);
+	let rating = document.querySelector("[name='rating']").value;
+	sessionStorage.setItem("rating", rating);
 }
 
 //The method below will be used to populate the review forms using data stored in the session data
-function populateForm(){
+function populateForm() {
 	document.querySelector("[name='film']").value = sessionStorage.getItem("filmName");
 	document.querySelector("[name='genre']").value = sessionStorage.getItem("genre");
 	document.querySelector("[name='director']").value = sessionStorage.getItem("director");
