@@ -65,92 +65,99 @@
 	</nav>
 	<!--<p> element below will display messages sent from controller-->
 	<p th:if="${pageMessage}" th:text="${pageMessage}" class="pageMessage">
-	<div class="authImgContainer">
-		<i class="fas fa-edit"></i>
-	</div>
-	<!--Container for the form-->
-	<div class="formWrap">
-		<h1>Add Review</h1>
-		<form action="/addReview" method="post" id="reviewForm" class = "reviewForm"
-			enctype="multipart/form-data">
-			<!--CSRF Token-->
-			<input type="hidden" th:name="${_csrf.parameterName}"
-				th:value="${_csrf.token}" id="csrfInput" />
-			<!--Film Name-->
-			<div class="form-group">
-				<label for="filmName">Film Name</label> <input type="text"
-					class="form-control" name="film" list="filmName"
-					placeholder="Name of film" required>
-				<datalist id="filmName">
-					<th:block th:each="film: ${films}"
-						th:unless="${films =='emptyRepo'}">
-						<option th:value="${film.name}" th:text="${film.name}"></option>
-					</th:block>
-				</datalist>
-			</div>
-			<!--Genre(Can Select Multiple)-->
-			<div class="form-group" onkeyup="checkOptionExists(this, 'Genre')" >
-				<label for="genre">Genre:</label> <select class="selectpicker"
-					data-width="70%" data-live-search="true" name="genre" required multiple >
-					<!--Genres will display in the select dropdown if there are any-->
-					<th:block th:unless="${genres =='emptyRepo'}"
-						th:each="genre: ${genres}">
-						<option th:value="${genre.genreId}" th:text="${genre.name}"></option>
-					</th:block>
-				</select>
-			</div>
-			<!--Director(Can Select Multiple)-->
-			<div class="form-group" onkeyup="checkOptionExists(this, 'Director')">
-				<label for="director">Director(s)</label> <select
-					class="selectpicker" data-width="70%" data-live-search="true" name="director"
-					required multiple>
-					<!--Directors will display in the select dropdown if there are any-->
-					<th:block th:unless="${directors =='emptyRepo'}"
-						th:each="director: ${directors}">
-						<option th:value="${director.directorId}"
-							th:text="${director.name}"></option>
-					</th:block>
-				</select>
-			</div>
-			<!--Actor(Can Select Multiple)-->
-			<div class="form-group" onkeyup="checkOptionExists(this, 'Actor')">
-				<label for="actor">Actor(s)</label> <select class="selectpicker"
-					data-width="70%" data-live-search="true" name="actor" required multiple>
-					<!--Actors will display in the select dropdown if there are any-->
-					<th:block th:unless="${actors =='emptyRepo'}"
-						th:each="actor: ${actors}">
-						<option th:value="${actor.actorId}" th:text="${actor.name}"></option>
-					</th:block>
-				</select>
-			</div>
-			<div class="form-group">
-				<!--Photo upload-->
-				<label for = "file">Upload Film Image: </label>
-				<input type="file" name="file">
-			</div>
-			<div class="form-group">
-				<!--Relase Year-->
-				<label for="releaseYear">Release Year</label> <select
-					name="releaseYear">
-					<!--Threshold is set in controller class so the highest year possible to be selected is current year-->
-					<option th:each="i : ${#numbers.sequence(1900, {yearThreshold})}"
-						th:value="${i}" th:text="${i}">
-				</select>
-			</div>
-			<div class = "form-group">
-				<!--Rating-->
-				<label for="rating">Rating</label> <select name="rating">
-					<option th:each="i : ${#numbers.sequence(0, 5)}" th:value="${i}"
-						th:text="${i}">
-				</select>
-			</div>
-			<div class="form-group">
-				<textarea placeholder="Leave your review" name="textArea" required></textarea>
-			</div>
-			<div class="text-center">
-				<button type="submit" class="btn btn-primary">Submit</button>
-			</div>
-		</form>
+	<div class = "container-fluid">
+		<div class="authImgContainer">
+			<i class="fas fa-edit"></i>
+		</div>
+		<!--Container for the form-->
+		<div class="formWrap">
+			<h1>Add Review</h1>
+			<form action="/addReview" method="post" id="reviewForm" class = "reviewForm" enctype="multipart/form-data">
+				<!--CSRF Token-->
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" id="csrfInput" />
+				<!--Film Name-->
+				<div class="form-group">
+					<label for="filmName">Film Name</label> 
+					<input type="text" class="form-control" name="film" list="filmName" placeholder="Name of film" required>
+					<datalist id="filmName">
+						<th:block th:each="film: ${films}" th:unless="${films =='emptyRepo'}">
+							<option th:value="${film.name}" th:text="${film.name}"></option>
+						</th:block>
+					</datalist>
+				</div>
+				<div class = "row">
+					<div class = "col-sm-12 col-md-4">
+						<!--Genre(Can Select Multiple)-->
+						<div class="form-group" onkeyup="checkOptionExists(this, 'Genre')" >
+							<label for="genre">Genre:</label> 
+							<select class="selectpicker" data-width="100%" data-live-search="true" name="genre" required multiple >
+								<!--Genres will display in the select dropdown if there are any-->
+								<th:block th:unless="${genres =='emptyRepo'}" th:each="genre: ${genres}">
+									<option th:value="${genre.genreId}" th:text="${genre.name}"></option>
+								</th:block>
+							</select>
+						</div>
+					</div>
+					<div class = "col-sm-12 col-md-4">
+						<!--Director(Can Select Multiple)-->
+						<div class="form-group" onkeyup="checkOptionExists(this, 'Director')">
+							<label for="director">Director(s)</label> 
+							<select class="selectpicker" data-width="100%" data-live-search="true" name="director" required multiple>
+								<!--Directors will display in the select dropdown if there are any-->
+								<th:block th:unless="${directors =='emptyRepo'}" th:each="director: ${directors}">
+									<option th:value="${director.directorId}" th:text="${director.name}"></option>
+								</th:block>
+							</select>
+						</div>
+					</div>
+					<div class = "col-sm-12 col-md-4">
+						<!--Actor(Can Select Multiple)-->
+						<div class="form-group" onkeyup="checkOptionExists(this, 'Actor')">
+							<label for="actor">Actor(s)</label> 
+							<select class="selectpicker" data-width="100%" data-live-search="true" name="actor" required multiple>
+								<!--Actors will display in the select dropdown if there are any-->
+								<th:block th:unless="${actors =='emptyRepo'}" th:each="actor: ${actors}">
+									<option th:value="${actor.actorId}" th:text="${actor.name}"></option>
+								</th:block>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class = "row">
+					<div class = "col-sm-12 col-md-3">
+						<div class="form-group">
+							<!--Release Year-->
+							<label for="releaseYear">Release Year</label> 
+							<select name="releaseYear">
+								<!--Threshold is set in controller class so the highest year possible to be selected is current year-->
+								<option th:each="i : ${#numbers.sequence(1900, {yearThreshold})}" th:value="${i}" th:text="${i}">
+							</select>
+						</div>
+					</div>
+					<div class = "col-sm-12 col-md-2">
+						<div class = "form-group">
+							<!--Rating-->
+							<label for="rating">Rating</label> <select name="rating">
+								<option th:each="i : ${#numbers.sequence(0, 5)}" th:value="${i}" th:text="${i}">
+							</select>
+						</div>
+					</div>
+					<div class = "col-sm-4 offset-md-2 col-md-4">
+						<div class="form-group">
+							<!--Photo upload-->
+							<label for = "file">Upload Film Image: </label>
+							<input type="file" name="file">
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<textarea placeholder="Leave your review" name="textArea" required></textarea>
+				</div>
+				<div class="text-center">
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</div>
+			</form>
+		</div>
 	</div>
 	<footer>
 		<p>Powered by Team200@NCI</p>
