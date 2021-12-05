@@ -32,40 +32,37 @@
 				<th:block th:each = "review: ${reviews}" class = "spanIterator">
 					<div class = "col-sm-12 col-md-4">
 						<div class = "card">
-							<h4 th:text = "'Movie: ' + ${review.filmId.name}"></h4>
+							<h3 th:text = "${review.filmId.name}"></h3>
 							<!--Show the movies image if exists-->
 							<img th:if = "${review.filmPhoto} != null" th:src="${review.filmPhoto.imageUrl}">
 							<i th:if = "${review.filmPhoto} == null" class="fas fa-chalkboard-teacher" ></i>
 							<!--If there are multiple genre's, put a comma after each until the last genre-->
 							<th:block th:if="${review.filmId.genres.size()>1}">
-								<span class = "reviewCardSpan">Genres: </span>
+								<span class = "reviewCardHeaderSpan">Genres: </span>
 								<span class = "reviewCardSpan" th:each = "genre: ${review.filmId.genres}" th:if = "${genreStat.Index != review.filmId.genres.size()-1}" th:text = "${genre.genre.name} + ', '"></span>
 								<span class = "reviewCardSpan" th:each = "genre: ${review.filmId.genres}" th:if = "${genreStat.Index == review.filmId.genres.size()-1}" th:text = "${genre.genre.name}"></span>
 							</th:block>
 							<th:block th:if="${review.filmId.genres.size()<=1}">
-								<span th:text = "'Genre: ' + ${review.filmId.genres.get(0).genre.name}"></span>
+								<div>
+									<span class = "reviewCardHeaderSpan">Genres: </span>
+									<span th:text = "${review.filmId.genres.get(0).genre.name}"></span>
+								</div>
 							</th:block>
 							<!--If there are multiple directors, put a comma after each until the last director-->
 							<th:block th:if="${review.filmId.directors.size()>1}">
-								<span class = "reviewCardSpan">Directors: </span>
+								<span class = "reviewCardHeaderSpan">Directors: </span>
 								<span class = "reviewCardSpan" th:each = "director: ${review.filmId.directors}" th:if = "${directorStat.Index != review.filmId.directors.size()-1}" th:text = "${director.director.name} + ', '"></span>
 								<span class = "reviewCardSpan" th:each = "director: ${review.filmId.directors}" th:if = "${directorStat.Index == review.filmId.directors.size()-1}" th:text = "${director.director.name}"></span>
 							</th:block>
 							<th:block th:if="${review.filmId.directors.size()<=1}">
-								<span th:text = "'Director: ' + ${review.filmId.directors.get(0).director.name}"></span>
-							</th:block>
-							<!--If there are multiple actors, put a comma after each until the last director-->
-							<th:block th:if="${review.filmId.actors.size()>1}">
-								<span class = "reviewCardSpan">Actors: </span>
-								<span class = "reviewCardSpan" th:each = "actor: ${review.filmId.actors}" th:if = "${actorStat.Index != review.filmId.actors.size()-1}" th:text = "${actor.actor.name} + ', '"></span>
-								<span class = "reviewCardSpan" th:each = "actor: ${review.filmId.actors}" th:if = "${actorStat.Index == review.filmId.actors.size()-1}" th:text = "${actor.actor.name}"></span>
-							</th:block>
-							<th:block th:if="${review.filmId.actors.size()<=1}">
-								<span th:text = "'Actor: ' + ${review.filmId.actors.get(0).actor.name}"></span>
+								<div>
+									<span class = "reviewCardHeaderSpan">Director: </span>
+									<span th:text = "${review.filmId.directors.get(0).director.name}"></span>
+								</div>
 							</th:block>
 							<div class = "reviewCardSpan">
 								<ul>
-									<li>Rating: </li>
+									<li class = "reviewCardHeaderSpan">Rating: </li>
 									<!--Provide an amount of stars equal to the reviews rating-->
 									<th:block th:each="i: ${#numbers.sequence(0, review.rating-1)}">
 										<li><i class="fas fa-star"></i></li>	

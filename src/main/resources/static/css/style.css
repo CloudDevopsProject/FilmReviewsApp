@@ -272,13 +272,15 @@ errorWrap {
 
 .reviewCardSpan{
 	display:contents;
+	margin:6em;
 }
 
+
 .reviewCardSpan ul{
+	width:auto;
+	margin:1em auto;
 	display:inline-flex;
-	padding-left:0;
 	list-style: none;
-	margin-left: 0;
 }/*Styling to allow the Rating tage and font awesome icons be inline*/
 
 .reviewCardSpan ul i {
@@ -287,10 +289,60 @@ errorWrap {
 }
 
 /*Styling for each films individual page*/
+.individualMovieDetailWrap {
+	margin:2em 0;
+	padding: 1em;
+	height: auto;
+	width:100%;
+}
+
+.individualMovieDetailWrap h2 {
+	text-decoration:underline;
+	margin:.5em 0;
+}
+
+.individualMovieDetailImgWrap {
+	text-align:center;
+	margin:0 0 1em 0;
+}
+
+.commentWrap {
+	border:.1em solid black;
+	padding:1em;
+}
+
+
+.reviewCardHeaderSpan {
+	font-size:1.5em;
+	display:contents;
+}
+
+.individualMovieDetailImgWrap img {
+	width: 30em;
+	max-width:100%;
+	height: 25em;
+	margin: 0 0 2em 0;
+}
+
+
 #reviewCommentForm textarea {
 	width:100%;	
 	height:6em;
 	padding:1em;
+}
+
+/*Styling for page that lists all films*/
+.card {
+	padding:1em;
+	margin:0 0 1em 0;
+}
+
+.card h3 {
+	text-decoration: underline;
+}
+.card img {
+	height:30em;
+	margin:1em 0;
 }
 
 
