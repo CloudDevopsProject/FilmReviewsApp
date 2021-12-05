@@ -151,7 +151,10 @@ errorWrap {
 
 /*Forms*/
 .reviewForm {
+	margin:2em 0;
 	padding:1em;
+	border:.1em solid black;
+	border-radius:1em;
 }
 
 .reviewForm input:not([type=file]),
