@@ -12,7 +12,7 @@
 		<p th:if = "${pageMessage}" th:text = "${pageMessage}" class = "pageMessage">
    		<h2>Login Form</h2>  
   	</div>  
-  	<form action = "/displayLogin" method = "post" class = "authForm">
+  	<form action = "/displayLogin" method = "post" class = "authForm" id = "loginForm">
 	  	<!--CSRF Token-->
 		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 	    <label for="emaiLogin"><b>Email</b></label>

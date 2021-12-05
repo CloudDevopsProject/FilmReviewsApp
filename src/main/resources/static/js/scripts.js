@@ -1,10 +1,23 @@
 //Regular Expressions that will be used to validate forms
-const lettersOnlyRegex = new RegExp("^.[A-z ]*$");	//Check for only lower o upper case letters
+const lettersOnlyRegex = new RegExp("^.[A-z ]*$");	//Check for only lower or upper case letters
+const lettersAndNumberOnlyRegex = new RegExp("^.[A-z0-9]*$");
 const lettersNumbersAndSpacesOnlyRegex = new RegExp("^.[A-z0-9 ]*$")
 const lettersNumbersParenthesesAndSpacesOnlyRegex = new RegExp("^.[A-z0-9() ]*$")
 const lettersNumbersParenthesesSpacesAndCertainCharactersOnlyRegex = new RegExp("^.|[A-z0-9()?,\n ]*$")
 
 $(document).ready(function() {
+	
+	//Prevent the login form from being submitted if it hasn't been validated
+	$("#loginForm").on("submit", function (event) {
+		let password = $("input[name = 'password']");
+		//If there are characters other than letters and numbers in the password provided, prevent the form from being submitted
+		if (lettersAndNumberOnlyRegex.test(password.val())) {
+			return true;
+		} else {
+			event.preventDefault();
+			displayFormError(password, "Password can only contain letters and numbers");
+		}
+	})
 
 	//Prevent the registration form from being submitted if it hasn't been validated
 	$("#registrationForm").on("submit", function(event) {
