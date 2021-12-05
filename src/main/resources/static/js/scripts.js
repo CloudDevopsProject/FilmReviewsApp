@@ -1,9 +1,9 @@
 //Regular Expressions that will be used to validate forms
 const lettersOnlyRegex = new RegExp("^.[A-z]*$");	//Check for only lower or upper case letters
 const lettersAndNumberOnlyRegex = new RegExp("^.[A-z0-9]*$");
-const lettersNumbersAndSpacesOnlyRegex = new RegExp("^.[A-z0-9 ]*$")
+const lettersAndSpacesOnlyRegex = new RegExp("^.[A-z ]*$")
 const lettersNumbersParenthesesAndSpacesOnlyRegex = new RegExp("^.[A-z0-9() ]*$")
-const lettersNumbersParenthesesSpacesAndCertainCharactersOnlyRegex = new RegExp("^.|[A-z0-9()?,\n ]*$")
+const lettersNumbersParenthesesSpacesAndCertainCharactersOnlyRegex = new RegExp("^.[A-z0-9()?.,\n ]*$")
 
 $(document).ready(function() {
 
@@ -68,7 +68,7 @@ $(document).ready(function() {
 		let movie = $("input[name = 'film']");
 		let textArea = $("textArea");
 		//Submit form if text input values match custom regex checks
-		if (lettersNumbersParenthesesAndSpacesOnlyRegex.test(movie.val()) && lettersNumbersParenthesesSpacesAndCertainCharactersOnlyRegex(textArea.val() && textArea.val() != " ")) {
+		if (lettersNumbersParenthesesAndSpacesOnlyRegex.test(movie.val()) && lettersNumbersParenthesesSpacesAndCertainCharactersOnlyRegex.test(textArea.val() && textArea.val() != " ")) {
 			return true;
 		} else {
 			event.preventDefault();
@@ -82,9 +82,9 @@ $(document).ready(function() {
 			}
 			//If there is an error for textArea
 			if (!lettersNumbersParenthesesSpacesAndCertainCharactersOnlyRegex.test(textArea.val())) {
-				displayFormError(textArea, "Allowed Values are letters, number, spaces, dots, commas and qustion marks");
+				displayFormError(textArea, "Allowed Values are letters, number, spaces, dots, commas, apostrophes and qustion marks");
 			} else {
-				removeFormError();
+				removeFormError(textArea);
 			}
 		}
 	})
@@ -192,64 +192,71 @@ function removeFormError(element) {
 // Function below will display an add button if an option from the review form options isn't already in the database'
 function checkOptionExists(element, modelType) {
 	let enteredVal = element.querySelector(".bs-searchbox input").value;
-	//Event listener will remove the button created if the focus on the input is removed
-	element.addEventListener('focusout', function() {
-		//Timeout required to allow time for button click to call it's method'
-		setTimeout(
-			function() {
-				if (element.querySelector("#addButton")) {
-					element.querySelector("#addButton").remove();
+	//If the entered value passed the regex checks, display a button allowing user to add to database
+	if(lettersAndSpacesOnlyRegex.test(enteredVal)) {
+		//Event listener will remove the button created if the focus on the input is removed
+		element.addEventListener('focusout', function() {
+			//Timeout required to allow time for button click to call it's method'
+			setTimeout(
+				function() {
+					if (element.querySelector("#addButton")) {
+						element.querySelector("#addButton").remove();
+					}
+				}, 5000
+			)
+		});
+	
+		//Only do the following steps if the value provided is not an empty string
+		if (enteredVal != "") {
+			let matchAmount = 0
+			//Get the value entered and convert to lower case
+			let lowerCaseInputValue = enteredVal.toLowerCase();
+			//Get the elements select element and traverse its options
+			let selectElement = element.querySelector("select");
+			for (i = 0; i < selectElement.length; i++) {
+				//If the option already exists don't loop through the options
+				let existingOption = selectElement.options[i].innerHTML.toLowerCase();
+				if (existingOption.startsWith(lowerCaseInputValue)) {
+					matchAmount++;
+					break;
 				}
-			}, 5000
-		)
-	});
-
-	//Only do the following steps if the value provided is not an empty string
-	if (enteredVal != "") {
-		let matchAmount = 0
-		//Get the value entered and convert to lower case
-		let lowerCaseInputValue = enteredVal.toLowerCase();
-		//Get the elements select element and traverse its options
-		let selectElement = element.querySelector("select");
-		for (i = 0; i < selectElement.length; i++) {
-			//If the option already exists don't loop through the options
-			let existingOption = selectElement.options[i].innerHTML.toLowerCase();
-			if (existingOption.startsWith(lowerCaseInputValue)) {
-				matchAmount++;
-				break;
 			}
-		}
-		//If there are no matches in the database for the users search query, display a button providing an option to add the value
-		if (!matchAmount > 0) {
-			if (!document.getElementById("addButton")) {
-				let addButton = document.createElement("button");
-				addButton.setAttribute('id', 'addButton');
-				addButton.setAttribute('class', 'btn');
-				addButton.innerHTML = `Add ${enteredVal}`;
-				//If the button is clicked invoke a function which adds the value to the database
-				element.append(addButton);
+			//If there are no matches in the database for the users search query, display a button providing an option to add the value
+			if (!matchAmount > 0) {
+				if (!document.getElementById("addButton")) {
+					let addButton = document.createElement("button");
+					addButton.setAttribute('id', 'addButton');
+					addButton.setAttribute('class', 'btn');
+					addButton.innerHTML = `Add ${enteredVal}`;
+					//If the button is clicked invoke a function which adds the value to the database
+					element.append(addButton);
+				} else {
+					let addButton = document.getElementById("addButton");
+					addButton.innerHTML = `Add ${enteredVal}`;
+					addButton.setAttribute('type', 'button');
+					addButton.addEventListener("click", function() {
+						addNewOption(modelType, enteredVal);
+					})
+				}
+			}
 			} else {
-				let addButton = document.getElementById("addButton");
-				addButton.innerHTML = `Add ${enteredVal}`;
-				addButton.setAttribute('type', 'button');
-				addButton.addEventListener("click", function() {
-					addNewOption(modelType, enteredVal);
-				})
+				//If the button to add an option is displayed remove it as there is no input value provided
+				if (document.getElementById("addButton")) {
+					document.getElementById("addButton").remove();
+				}
+			}
+		} else {
+			if(document.getElementById("addButton")) {
+				document.getElementById("addButton").remove()
 			}
 		}
-	} else {
-		//If the button to add an option is displayed remove it as there is no input value provided
-		if (document.getElementById("addButton")) {
-			document.getElementById("addButton").remove();
-		}
-	}
 }
 
 function addNewOption(modelType, enteredVal) {
 	// Store details already entered in the form in session storage
 	scrapeReviewForm();
 	//Make sure the enteredVal is validated
-	if (lettersNumbersAndSpacesOnlyRegex.test(enteredVal)) {
+	if (!lettersAndSpacesOnlyRegex.test(enteredVal)) {
 		//Create a form so it can be posted to the backend wit hthe data provided by the user
 		let form = document.createElement("form");
 		form.style.display = "none";
@@ -265,7 +272,11 @@ function addNewOption(modelType, enteredVal) {
 		input.setAttribute('value', enteredVal);
 		form.append(input);
 		document.body.appendChild(form);
-		form.submit();
+		//form.submit();
+	} else {
+		if(document.getElementById("addButton")) {
+			document.getElementById("addButton").remove();
+		}
 	}
 }
 
