@@ -12,10 +12,13 @@ import com.filmreview.controller.*;
 	 
 	 AppController controller=new AppController();
 	 
-	 @Test
+	 
+	@Test
 	 @PostMapping("/process-contact")
 	 void contact() {
 		 RedirectAttributes attributes = null;
+		 String status = "Your query has been sent";
+		 attributes.addFlashAttribute("pageMessage", status);
 		 String response= controller.processContact("Name", "email", "phone", "description", attributes);
 		 assertEquals("redirect:/contact", response);
 		 
