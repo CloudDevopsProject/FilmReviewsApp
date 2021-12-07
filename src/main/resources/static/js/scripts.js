@@ -90,7 +90,7 @@ $(document).ready(function() {
 	})
 
 	//Prevent the contact form from being submitted if it hasn't been validated
-	$("#commentForm").on("change", function(event) {
+	$("#commentForm").on("submit", function(event) {
 		//Assign the freeflowing form input fields to variables
 		let name = $("input[name = 'name']");
 		let comment = $("textArea");
