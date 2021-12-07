@@ -90,25 +90,25 @@ $(document).ready(function() {
 	})
 
 	//Prevent the contact form from being submitted if it hasn't been validated
-	$("#commentForm").on("submit", function(event) {
+	$("#commentForm").on("change", function(event) {
 		//Assign the freeflowing form input fields to variables
 		let name = $("input[name = 'name']");
 		let comment = $("textArea");
 		//Submit form if text input values match custom regex checks
-		if (lettersOnlyRegex.test(name.val()) && lettersNumbersParenthesesAndSpacesOnlyRegex.test(comment.val())) {
+		if (lettersAndSpacesOnlyRegex.test(name.val()) && lettersNumbersParenthesesSpacesAndCertainCharactersOnlyRegex.test(comment.val())) {
 			return true;
 		} else {
 			event.preventDefault();
 			//If there is an error for name
-			if (!lettersOnlyRegex.test(name.val())) {
+			if (!lettersAndSpacesOnlyRegex.test(name.val())) {
 				displayFormError(name.parent(), "Only letters and spaces can be accepted inputs");
 			} else {
 				//Remove the error message if name is valid 
 				removeFormError(name.parent());
 			}
 			//If there is an error for comment 
-			if (!lettersNumbersParenthesesAndSpacesOnlyRegex.test(comment.val())) {
-				displayFormError(comment, "Only letters, numbers, parentheses and spaces can be accepted as inputs");
+			if (!lettersNumbersParenthesesSpacesAndCertainCharactersOnlyRegex.test(comment.val())) {
+				displayFormError(comment, "Allowed Values are letters, number, spaces, dots, commas, apostrophes and qustion marks");
 			} else {
 				//Remove the error message if name is valid 
 				removeFormError(comment);
