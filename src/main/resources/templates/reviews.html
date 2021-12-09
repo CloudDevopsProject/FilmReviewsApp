@@ -8,7 +8,7 @@
 	<div th:insert = "htmlFragments :: navBar"></div>
 	<!--<p> element below will display a message after role adjustment is attempted -->
 	<p th:if = "${pageMessage}" th:text = "${pageMessage}" class = "pageMessage">
-	<h1>Movie Reviews</h1>
+	<h1>Movie ReviewsCI Test</h1>
 	<!--If the user is not logged in, provide options to login or register to add a review-->
 	<div sec:authorize="!isAuthenticated()">
 		<h3>Login or Register to add a movie review</h3>
