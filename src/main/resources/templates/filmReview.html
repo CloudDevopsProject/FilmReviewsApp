@@ -120,8 +120,7 @@
 								</div>
 								<!--Each comment will have a delete option if the user is a logged in admin-->
 								<div class="buttonWrap">
-									<a
-										sec:authorize="isAuthenticated() && {#authentication.getPrincipal().getRoleId == 1}">
+									<a sec:authorize="isAuthenticated() && {#authentication.getPrincipal().getRoleId == 1}" th:href = "@{'/deleteComment/'} + ${comment.commentId}">
 										<button class="btn btn-danger">Delete</button>
 									</a>
 								</div>

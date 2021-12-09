@@ -33,7 +33,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-          GITHUB_TOKEN: ${{ github.token }}
           LOCALDB_PASSWORD: ${{ secrets.LOCALDB_PASSWORD }}
           LOCALDB_URL: ${{ secrets.LOCALDB_URL }}
           LOCALDB_USERNAME: ${{ secrets.LOCALDB_USERNAME }}

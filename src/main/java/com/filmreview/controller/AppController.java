@@ -736,4 +736,26 @@ public class AppController {
 		attributes.addFlashAttribute("pageMessage", pageMessage);
 		return "redirect:/viewReview/" + reviewId;
 	}
+	
+	// Method below allows an admin to delete comments
+	@GetMapping("/deleteComment/{commentId}")
+	public String deleteComment(@PathVariable("commentId") Long id, RedirectAttributes attributes) {
+		// Make sure the user is a logged in admin
+		if(getUserRole().equals("admin")) {
+			Comment comment = commentRepo.getById(id);
+			long reviewId = comment.getReviewId().getReviewId();
+			String pageMessage = "";
+			try {
+				commentRepo.delete(commentRepo.getById(id));
+				pageMessage = "Comment Deleted";
+			} catch (Exception e) {
+				pageMessage = "An error occured deleting this comment";
+			}
+			attributes.addFlashAttribute("pageMessage", pageMessage);
+			return "redirect:/viewReview/" + reviewId; 
+		} else {
+			return "error.html";
+		}
+		
+	}
 }
