@@ -306,6 +306,19 @@ errorWrap {
 	margin:0 0 1em 0;
 }
 
+@media screen and (min-width: 515px) {
+	.individualMovieDetailImgWrap i {
+		font-size:28em;
+	}
+} /* On screens that are 515px and above, set the fontawesome icon font size to 28em */
+
+@media screen and (max-width: 514px) {
+	.individualMovieDetailImgWrap i {
+		font-size:15em;
+	}
+} /* On screens that are below 515px, set the fontawesome icon font size to 15em */
+
+
 .commentWrap {
 	border:.1em solid black;
 	padding:1em;
