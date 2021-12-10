@@ -115,6 +115,24 @@ $(document).ready(function() {
 			}
 		}
 	})
+	//Prevent the comment form from being submitted if it hasn't been validated
+	$("#reviewCommentForm").on("submit", function(event) {
+		//Assign the freeflowing form input fields to variables
+		let comment = $("textArea");
+		//Submit form if text input values match custom regex checks
+		if (lettersNumbersParenthesesSpacesAndCertainCharactersOnlyRegex.test(comment.val())) {
+			return true;
+		} else {
+			event.preventDefault();
+			//If there is an error for comment 
+			if (!lettersNumbersParenthesesSpacesAndCertainCharactersOnlyRegex.test(comment.val())) {
+				displayFormError(comment, "Allowed Values are letters, number, spaces, dots, commas, apostrophes and qustion marks");
+			} else {
+				//Remove the error message if name is valid 
+				removeFormError(comment);
+			}
+		}
+	})
 })
 
 //Function below will display an alert to the user before adjusting another users role
